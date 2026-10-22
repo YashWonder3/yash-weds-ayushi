@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Little Film</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#2b201c;height:100%}
+  body{display:flex;align-items:center;justify-content:center}
+  canvas{width:min(100vw,177.78vh);height:auto;display:block}
+</style>
+</head>
+<body>
+<canvas id="film" width="1280" height="720"></canvas>
+<!-- story.js is generated from data/story.yaml by render.mjs -->
+<script src="story.js"></script>
+<script>
+/* ============================================================
+   Our Little Film — 30 s, 1280×720, drawn frame-by-frame.
+   draw(t) is a pure function of time so render.mjs can step it.
+   Open this file in a browser to preview it in real time.
+   ============================================================ */
+(() => {
+const S = window.STORY;
+const W = 1280, H = 720, DURATION = 30;
+const C = { cream:'#FAF5EE', paper:'#FFFDF8', ink:'#4A342E', soft:'#7A635B', terra:'#B4664A', gold:'#C19A5B' };
+const SERIF = '"Cormorant Garamond", Georgia, serif';
+const BODY = 'Lora, Georgia, serif';
+const cv = document.getElementById('film');
+const ctx = cv.getContext('2d');
+
+const [nameA, nameB] = S.couple.display.split('❤').map(s => s.trim());
+
+/* ---------- timing helpers ---------- */
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const back = x => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+// visibility of a scene with fade-in / fade-out windows
+const window_ = (t, a, b, f = .6) => Math.min(prog(t, a, a + f), 1 - prog(t, b - f, b));
+
+/* ---------- drawing helpers ---------- */
+function text(str, x, y, { size = 32, font = SERIF, color = C.ink, align = 'center', style = '', weight = 500, alpha = 1, spacing = 0 } = {}) {
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.font = `${style} ${weight} ${size}px ${font}`;
+  ctx.fillStyle = color;
+  ctx.textAlign = align;
+  ctx.textBaseline = 'middle';
+  if (spacing) ctx.letterSpacing = spacing + 'px';
+  ctx.fillText(str, x, y);
+  ctx.restore();
+}
+
+function wrap(str, maxW, size, font, style = '') {
+  ctx.font = `${style} 400 ${size}px ${font}`;
+  const words = str.split(' '), lines = [];
+  let line = '';
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+// caption with a typewriter reveal; p = 0..1
+function caption(str, y, p, { size = 30, maxW = 980, alpha = 1, style = 'italic', color = C.ink } = {}) {
+  const shown = str.slice(0, Math.round(str.length * clamp(p)));
+  const all = wrap(str, maxW, size, SERIF, style);
+  let i = 0;
+  all.forEach((ln, k) => {
+    const part = shown.slice(i, i + ln.length);
+    i += ln.length + 1;
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    ctx.font = `${style} 500 ${size}px ${SERIF}`;
+    ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    const x0 = W / 2 - ctx.measureText(ln).width / 2;
+    ctx.fillText(part, x0, y + (k - (all.length - 1) / 2) * size * 1.35);
+    ctx.restore();
+  });
+}
+
+function heart(x, y, s, color, alpha = 1) {
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.translate(x, y); ctx.scale(s / 30, s / 30);
+  ctx.beginPath();
+  ctx.moveTo(0, -7);
+  ctx.bezierCurveTo(-3, -15, -15, -15, -15, -6);
+  ctx.bezierCurveTo(-15, 2, -6, 7, 0, 11);
+  ctx.bezierCurveTo(6, 7, 15, 2, 15, -6);
+  ctx.bezierCurveTo(15, -15, 3, -15, 0, -7);
+  ctx.fillStyle = color; ctx.fill();
+  ctx.restore();
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+
+// a simple, friendly figure: head + shoulders. who = 'Y' | 'A'
+function person(x, y, who, { s = 1, alpha = 1, bob = 0, face = 1 } = {}) {
+  const col = who === 'Y' ? C.terra : C.gold;
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.translate(x, y + Math.sin(bob) * 4); ctx.scale(s * face, s);
+  // shoulders
+  ctx.beginPath();
+  ctx.moveTo(-58, 120); ctx.quadraticCurveTo(-58, 40, 0, 38); ctx.quadraticCurveTo(58, 40, 58, 120); ctx.closePath();
+  ctx.fillStyle = col; ctx.fill();
+  if (who === 'A') { // dupatta stripe
+    ctx.beginPath(); ctx.moveTo(-30, 46); ctx.quadraticCurveTo(10, 80, 40, 120); ctx.lineWidth = 9;
+    ctx.strokeStyle = C.terra; ctx.globalAlpha *= .55; ctx.stroke(); ctx.globalAlpha /= .55;
+  }
+  // head
+  ctx.beginPath(); ctx.arc(0, 0, 32, 0, Math.PI * 2); ctx.fillStyle = '#E9CDB4'; ctx.fill();
+  // hair
+  ctx.fillStyle = C.ink;
+  ctx.beginPath();
+  if (who === 'Y') { ctx.arc(0, -6, 32, Math.PI * 1.05, Math.PI * 1.95); ctx.quadraticCurveTo(10, -26, -30, -12); }
+  else { ctx.arc(0, -4, 33, Math.PI * .95, Math.PI * 2.05); ctx.quadraticCurveTo(0, -20, -33, -4); ctx.moveTo(-30, -18); ctx.arc(-34, -16, 12, 0, Math.PI * 2); }
+  ctx.fill();
+  if (who === 'A') { ctx.beginPath(); ctx.arc(0, -12, 2.6, 0, Math.PI * 2); ctx.fillStyle = C.terra; ctx.fill(); }
+  // eyes + smile, looking toward +x
+  ctx.fillStyle = C.ink;
+  ctx.beginPath(); ctx.arc(8, 2, 2.6, 0, Math.PI * 2); ctx.arc(20, 2, 2.6, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(14, 12, 6, .15 * Math.PI, .85 * Math.PI); ctx.lineWidth = 2; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.restore();
+}
+
+function eyebrow(str, y, alpha) {
+  text(str.toUpperCase(), W / 2, y, { size: 15, font: BODY, color: C.terra, spacing: 6, weight: 400, alpha });
+}
+
+/* ---------- background ---------- */
+function backdrop(t) {
+  ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H);
+  const g = ctx.createRadialGradient(W / 2, H / 2, 200, W / 2, H / 2, 820);
+  g.addColorStop(0, 'rgba(255,253,248,.9)'); g.addColorStop(1, 'rgba(193,154,91,.16)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // double gold frame, drawn in at the start
+  const p = easeOut(prog(t, 0, 1.4));
+  ctx.save();
+  ctx.strokeStyle = C.gold; ctx.lineWidth = 1.5;
+  const per = 2 * (W - 56) + 2 * (H - 56);
+  ctx.setLineDash([per * p, per]);
+  ctx.strokeRect(28, 28, W - 56, H - 56);
+  ctx.globalAlpha = .45; ctx.lineWidth = 1;
+  const per2 = 2 * (W - 76) + 2 * (H - 76);
+  ctx.setLineDash([per2 * p, per2]);
+  ctx.strokeRect(38, 38, W - 76, H - 76);
+  ctx.restore();
+}
+
+/* ---------- scenes ---------- */
+const sentences = s => s.match(/[^.!?]+[.!?]+/g).map(x => x.trim());
+const p1 = sentences(S.story.p1);   // [first saw … name., So he found … register.]
+const p2 = sentences(S.story.p2);
+
+// 0 – 4.2  title card
+function sceneTitle(t) {
+  const a = window_(t, 0, 4.2);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow(S.film.title, 230, prog(t, .4, 1.2));
+  const n = easeOut(prog(t, .8, 2));
+  text(nameA, W / 2 - 70 - 30 * (1 - n), 335, { size: 104, alpha: n, align: 'right' });
+  text(nameB, W / 2 + 70 + 30 * (1 - n), 335, { size: 104, alpha: n, align: 'left' });
+  const hp = back(prog(t, 1.6, 2.3));
+  heart(W / 2, 338, 46 * hp + Math.sin(t * 6) * 1.5 * hp, C.terra);
+  text(S.couple.hindi, W / 2, 432, { size: 34, color: C.soft, alpha: prog(t, 2.1, 2.8) });
+  text('❦', W / 2, 492, { size: 26, color: C.gold, alpha: prog(t, 2.4, 3) });
+  ctx.restore();
+}
+
+// 4.2 – 10.6  onboarding: he sees her, she leaves, no name
+function sceneOnboarding(t) {
+  const a = window_(t, 4.2, 10.6);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow('Chapter One · Onboarding', 92, 1);
+  // floor + a welcome banner
+  ctx.strokeStyle = 'rgba(122,99,91,.35)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(140, 470); ctx.lineTo(W - 140, 470); ctx.stroke();
+  roundRect(W / 2 - 150, 140, 300, 50, 8); ctx.fillStyle = C.paper; ctx.fill();
+  ctx.strokeStyle = C.gold; ctx.lineWidth = 1.2; ctx.stroke();
+  text('Welcome, new joiners', W / 2, 166, { size: 22, style: 'italic', color: C.soft });
+
+  // Yash walks in from the left
+  const walk = easeOut(prog(t, 4.4, 6.4));
+  const yx = 120 + walk * 310;
+  person(yx, 330, 'Y', { bob: walk < 1 ? t * 12 : 0 });
+  // Ayushi stands right, then leaves to the right
+  const leave = ease(prog(t, 8.2, 9.6));
+  person(850 + leave * 480, 330, 'A', { face: -1, alpha: 1 - leave * .9 });
+  // the spark
+  const sp = prog(t, 6.3, 6.9);
+  if (sp > 0) heart(yx + 10, 270 - 24 * easeOut(sp), 26 * back(sp), C.terra, 1 - prog(t, 9.6, 10.2) * .6);
+  // name tag with a question mark
+  const q = back(prog(t, 8.8, 9.3));
+  if (q > 0) {
+    ctx.save(); ctx.translate(880, 300); ctx.scale(q, q); ctx.rotate(-.06);
+    roundRect(-70, -34, 140, 68, 10); ctx.fillStyle = C.paper; ctx.fill();
+    ctx.strokeStyle = C.terra; ctx.lineWidth = 2; ctx.stroke();
+    text('HELLO, MY NAME IS', 0, -16, { size: 11, font: BODY, color: C.terra, spacing: 2 });
+    text('?', 0, 12, { size: 40, color: C.ink, weight: 600 });
+    ctx.restore();
+  }
+  // caption: "Yash first saw Ayushi at office onboarding — and somehow left without her name."
+  caption(p1[0], 580, prog(t, 4.8, 9.2), { size: 32 });
+  ctx.restore();
+}
+
+// 10.6 – 16.4  the onboarding register
+function sceneRegister(t) {
+  const a = window_(t, 10.6, 16.4);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow('Chapter Two · The Register', 92, 1);
+  const open = ease(prog(t, 10.7, 11.6));
+  const bx = W / 2, by = 135, bw = 640, bh = 340;
+  // book shadow + pages
+  ctx.save();
+  ctx.shadowColor = 'rgba(74,52,46,.18)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 10;
+  roundRect(bx - bw / 2 * open, by, bw * open, bh, 6); ctx.fillStyle = C.paper; ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(193,154,91,.7)'; ctx.lineWidth = 1.2;
+  roundRect(bx - bw / 2 * open, by, bw * open, bh, 6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(bx, by + 8); ctx.lineTo(bx, by + bh - 8); ctx.stroke();
+  if (open > .9) {
+    // left page: header + rows of scribbles; right page: rows, with her name
+    text('ONBOARDING REGISTER', bx - bw / 4, by + 34, { size: 13, font: BODY, color: C.terra, spacing: 3 });
+    text('Name', bx + bw / 4 - 80, by + 34, { size: 15, font: BODY, color: C.soft, style: 'italic' });
+    for (let r = 0; r < 7; r++) {
+      for (const side of [-1, 1]) {
+        const ry = by + 72 + r * 36;
+        const x0 = bx + (side < 0 ? -bw / 2 + 36 : 36);
+        ctx.strokeStyle = 'rgba(122,99,91,.22)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x0, ry + 12); ctx.lineTo(x0 + bw / 2 - 72, ry + 12); ctx.stroke();
+        if (side > 0 && r === 4) continue; // her row is written separately
+        // scribbled "names"
+        ctx.strokeStyle = 'rgba(74,52,46,.38)'; ctx.lineWidth = 1.6; ctx.beginPath();
+        const len = 90 + ((r * 37 + (side + 1) * 23) % 110);
+        for (let k = 0; k <= len; k += 4) ctx.lineTo(x0 + 6 + k, ry + Math.sin(k * .45 + r * 2 + side) * 4);
+        ctx.stroke();
+      }
+    }
+    // the finger tracing down the right page, stopping at her row
+    const scan = ease(prog(t, 11.8, 13.6));
+    const herY = by + 72 + 4 * 36;
+    const fy = by + 72 + scan * (herY - by - 72);
+    const hl = easeOut(prog(t, 13.6, 14.3));
+    ctx.fillStyle = 'rgba(193,154,91,.28)';
+    ctx.fillRect(bx + 30, herY - 16, (bw / 2 - 60) * hl, 30);
+    const nm = nameB.slice(0, Math.round(nameB.length * prog(t, 13.4, 14.2)));
+    text(nm, bx + 44, herY - 1, { size: 32, style: 'italic', align: 'left' });
+    ctx.save(); ctx.translate(bx + bw / 2 - 30, fy); // pointer
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(22, -10); ctx.lineTo(22, 10); ctx.closePath();
+    ctx.fillStyle = C.terra; ctx.fill(); ctx.restore();
+    if (hl > .9) heart(bx + bw / 2 - 70, herY - 2, 18 * back(prog(t, 14.3, 14.8)), C.terra);
+  }
+  caption(p1[1], 580, prog(t, 11.2, 15.2), { size: 30 });
+  ctx.restore();
+}
+
+// 16.4 – 22.4  one honest conversation became many
+function sceneConversations(t) {
+  const a = window_(t, 16.4, 22.4);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow('Chapter Three · Conversations', 92, 1);
+  const close = ease(prog(t, 18.6, 21));
+  person(400 + close * 90, 330, 'Y');
+  person(880 - close * 90, 330, 'A', { face: -1 });
+  // bubbles: one, then many — accelerating
+  const times = [16.8, 17.6, 18.2, 18.6, 18.9, 19.15, 19.35, 19.55, 19.7, 19.85, 20, 20.12];
+  times.forEach((st, i) => {
+    const p = prog(t, st, st + .35);
+    if (p <= 0) return;
+    const left = i % 2 === 0;
+    const rise = prog(t, st, st + 2.4);
+    const bxp = W / 2 + (left ? -1 : 1) * (70 + (i * 53) % 140);
+    const byp = 260 - rise * 90 - (i * 31) % 60;
+    const fade = 1 - prog(t, st + 1.8, st + 2.6);
+    ctx.save(); ctx.globalAlpha *= fade; ctx.translate(bxp, byp); ctx.scale(back(p), back(p));
+    roundRect(-38, -22, 76, 44, 16); ctx.fillStyle = left ? 'rgba(180,102,74,.9)' : 'rgba(193,154,91,.95)'; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(left ? -10 : 10, 20); ctx.lineTo(left ? -20 : 20, 34); ctx.lineTo(left ? 4 : -4, 20); ctx.fill();
+    for (let d = -1; d <= 1; d++) { ctx.beginPath(); ctx.arc(d * 14, 0, 4, 0, Math.PI * 2); ctx.fillStyle = C.paper; ctx.fill(); }
+    ctx.restore();
+  });
+  if (t > 20.4) heart(W / 2, 250, 40 * back(prog(t, 20.4, 21)), C.terra);
+  caption(p2[0], 560, prog(t, 16.8, 18.2), { size: 32 });
+  caption(p2[1], 612, prog(t, 18.6, 21.2), { size: 26, color: C.soft });
+  ctx.restore();
+}
+
+// 22.4 – 26.6  two circles, one bloom, the three promises
+function sceneBloom(t) {
+  const a = window_(t, 22.4, 26.6);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow('What We Promise', 92, 1);
+  const m = ease(prog(t, 22.5, 23.8));
+  const cy = 280, r = 110, gap = 260 - m * 160;
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = C.terra; ctx.beginPath(); ctx.arc(W / 2 - gap / 2, cy, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = C.gold; ctx.beginPath(); ctx.arc(W / 2 + gap / 2, cy, r, 0, Math.PI * 2); ctx.stroke();
+  text('Y', W / 2 - gap / 2 - 40, cy + 6, { size: 64, color: C.terra });
+  text('A', W / 2 + gap / 2 + 40, cy + 6, { size: 64, color: C.gold });
+  // a lotus blooming where the circles meet
+  const b = easeOut(prog(t, 23.6, 24.6));
+  if (b > 0) {
+    ctx.save(); ctx.translate(W / 2, cy + 20);
+    for (let i = -2; i <= 2; i++) {
+      ctx.save(); ctx.rotate(i * .38 * b);
+      ctx.beginPath(); ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(-16, -30 * b, 0, -62 * b * (1 - Math.abs(i) * .12));
+      ctx.quadraticCurveTo(16, -30 * b, 0, 0);
+      ctx.fillStyle = i % 2 ? 'rgba(193,154,91,.85)' : 'rgba(180,102,74,.85)'; ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  // chips from story.yaml
+  const chips = S.story.chips;
+  ctx.font = `italic 500 24px ${SERIF}`;
+  const widths = chips.map(c => ctx.measureText(c).width + 48);
+  const total = widths.reduce((s, w) => s + w, 0) + 20 * (chips.length - 1);
+  let x = W / 2 - total / 2;
+  chips.forEach((c, i) => {
+    const p = back(prog(t, 24.4 + i * .45, 24.9 + i * .45));
+    if (p > 0) {
+      ctx.save(); ctx.translate(x + widths[i] / 2, 500); ctx.scale(p, p);
+      roundRect(-widths[i] / 2, -24, widths[i], 48, 24); ctx.fillStyle = C.paper; ctx.fill();
+      ctx.strokeStyle = C.gold; ctx.lineWidth = 1.2; ctx.stroke();
+      text(c, 0, 1, { size: 24, style: 'italic' });
+      ctx.restore();
+    }
+    x += widths[i] + 20;
+  });
+  ctx.restore();
+}
+
+// 26.6 – 30  the invitation
+function sceneFinale(t) {
+  const a = prog(t, 26.6, 27.3);
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a;
+  eyebrow('Together with their families, we invite you', 150, 1);
+  text(nameA, W / 2 - 60, 262, { size: 92, align: 'right' });
+  text(nameB, W / 2 + 60, 262, { size: 92, align: 'left' });
+  heart(W / 2, 265, 40 + Math.sin(t * 5) * 2, C.terra);
+  text('❦', W / 2, 340, { size: 24, color: C.gold, alpha: prog(t, 27, 27.6) });
+  text(S.wedding.datesLine, W / 2, 398, { size: 46, alpha: prog(t, 27.1, 27.7) });
+  text(S.wedding.city, W / 2, 452, { size: 26, color: C.soft, style: 'italic', alpha: prog(t, 27.4, 28) });
+  text(S.couple.hashtag, W / 2, 540, { size: 22, font: BODY, color: C.terra, spacing: 2, alpha: prog(t, 27.9, 28.5) });
+  text('See you there.', W / 2, 600, { size: 30, style: 'italic', alpha: prog(t, 28.3, 29) });
+  ctx.restore();
+}
+
+function draw(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+  backdrop(t);
+  sceneTitle(t); sceneOnboarding(t); sceneRegister(t);
+  sceneConversations(t); sceneBloom(t); sceneFinale(t);
+  // gentle fade from / to cream at the very ends
+  const edge = Math.max(1 - prog(t, 0, .4), prog(t, DURATION - .5, DURATION));
+  if (edge > 0) { ctx.globalAlpha = edge; ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+}
+
+window.FILM = { draw, DURATION, W, H, ready: document.fonts.ready };
+
+// live preview unless driven by render.mjs
+if (!location.search.includes('render')) {
+  document.fonts.ready.then(() => {
+    const t0 = performance.now();
+    const loop = now => { draw(((now - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  });
+}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 210" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Halo -->
+  <circle cx="100" cy="108" r="96" stroke="#C19A5B" stroke-width="1.2" opacity=".55"/>
+  <circle cx="100" cy="108" r="90" stroke="#C19A5B" stroke-width=".8" opacity=".35"/>
+  <!-- Mukut (crown) -->
+  <g stroke="#C19A5B" stroke-width="2.2">
+    <path d="M80 60 C80 44 88 34 100 26 C112 34 120 44 120 60"/>
+    <path d="M88 60 C89 50 94 43 100 38 C106 43 111 50 112 60"/>
+    <path d="M100 26 V20"/>
+    <circle cx="100" cy="17" r="3" fill="#C19A5B"/>
+    <rect x="74" y="60" width="52" height="8" rx="4" fill="#FAF5EE"/>
+  </g>
+  <g stroke="#B4664A" stroke-width="2.4">
+    <!-- Ears -->
+    <path d="M76 74 C54 58 26 66 22 92 C19 112 30 130 48 136 C60 140 70 134 77 124"/>
+    <path d="M124 74 C146 58 174 66 178 92 C181 112 170 130 152 136 C140 140 130 134 123 124"/>
+    <path d="M70 84 C54 78 40 86 38 100 C37 112 46 122 58 122" stroke-width="1.6" opacity=".7"/>
+    <path d="M130 84 C146 78 160 86 162 100 C163 112 154 122 142 122" stroke-width="1.6" opacity=".7"/>
+    <!-- Head flowing into the trunk, which curls to his left -->
+    <path d="M76 68 C68 88 70 110 84 120 C90 124 90 130 89 140 C88 158 94 172 106 180 C120 189 140 182 140 166 C140 154 128 149 121 156 C115 162 120 172 128 168"/>
+    <path d="M124 68 C132 88 130 110 116 120 C110 124 110 132 111 142 C112 150 114 154 118 156"/>
+    <!-- Eyes -->
+    <path d="M82 99 Q88 93 95 99 Q88 102 82 99 Z" fill="#B4664A"/>
+    <path d="M105 99 Q112 93 118 99 Q112 102 105 99 Z" fill="#B4664A"/>
+    <!-- Tusk -->
+    <path d="M118 126 C127 129 132 137 131 146 C126 141 121 137 115 135" fill="#FFF6E6" stroke-width="2"/>
+  </g>
+  <!-- Tilak -->
+  <g stroke="#C19A5B" stroke-width="1.8">
+    <path d="M90 78 H110"/><path d="M88 83 H112"/><path d="M90 88 H110"/>
+  </g>
+  <circle cx="100" cy="83" r="2.6" fill="#7E2A33"/>
+</svg>

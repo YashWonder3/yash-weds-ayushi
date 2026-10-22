@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ $names := replace site.Data.story.couple.display "❤" "&" }}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ site.Data.story.meta.title }}</title>
+<meta name="description" content="{{ site.Data.story.meta.description }}">
+<meta property="og:title" content="{{ site.Data.story.meta.title }}">
+<meta property="og:description" content="{{ site.Data.story.meta.description }}">
+<meta property="og:image" content="{{ site.Data.story.meta.baseurl }}images/og-image.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#3A161B">
+<link rel="icon" href='{{ "images/favicon.svg" | relURL }}'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href='{{ "css/style.css" | relURL }}'>
+<script>
+  // Royal scroll intro: only on a fresh open (no #link), and never for reduced motion.
+  // Failsafe: if main.js never runs, the page is released after 7s.
+  (function(){var d=document.documentElement;try{if(!location.hash&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},7000)}}catch(e){}})();
+</script>
+</head>
+<body>
+<div id="scroll-intro" aria-hidden="true">
+  <div class="rod si-rod si-top"></div>
+  <div class="rod si-rod si-bottom"></div>
+  <div class="si-ribbon"></div>
+  <div class="si-seal"><span>{{ substr site.Data.story.couple.display 0 1 }}<i>❤&#xFE0E;</i>{{ substr (index (split site.Data.story.couple.display "❤ ") 1) 0 1 }}</span></div>
+  <p class="si-hint">Tap the seal to open</p>
+</div>
+<div class="rod rod-top" aria-hidden="true"></div>
+<div class="page-frame">
+
+<header class="hero">
+  {{ $g := "" }}{{ range slice "png" "webp" "jpg" "jpeg" "svg" }}{{ if and (not $g) (fileExists (printf "static/images/ganesh.%s" .)) }}{{ $g = printf "images/ganesh.%s" . }}{{ end }}{{ end }}
+  {{ with $g }}
+  <div class="ganesh">
+    <img src='{{ . | relURL }}' alt="Shri Ganesh Ji" width="112" height="118">
+    <p class="shloka" lang="hi">{{ with site.Data.story.couple.shloka }}{{ . }}{{ else }}वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।<br>निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥{{ end }}</p>
+  </div>
+  {{ end }}
+  <p class="eyebrow">The Wedding Of</p>
+  <img class="monogram" src='{{ "images/hero-placeholder.svg" | relURL }}' alt="{{ replace site.Data.story.couple.display "❤" "and" }}" width="220" height="158">
+  <h1>{{ replace (site.Data.story.couple.display | htmlEscape) "❤" "<span class=\"love\" aria-label=\"loves\">❤&#xFE0E;</span>" | safeHTML }}</h1>
+  <p class="hindi">{{ replace (site.Data.story.couple.hindi | htmlEscape) "❤" "<span class=\"love\">❤&#xFE0E;</span>" | safeHTML }}</p>
+  <p class="divider">❦</p>
+  <p class="dates">{{ site.Data.story.wedding.datesLine }}</p>
+  <p class="venue-line">{{ site.Data.story.wedding.city }}</p>
+  <p class="families">Together with their families<br>
+    <span>{{ site.Data.story.families.groom }}</span><br>
+    <em>&amp;</em><br>
+    <span>{{ site.Data.story.families.bride }}</span>
+  </p>
+  <a class="btn" href="#events">Open the Invitation ↓</a>
+</header>
+
+<section class="section">
+  <p class="eyebrow">Counting Down</p>
+  <h2 id="countdown-title">Until We Say Yes</h2>
+  <div class="countdown" id="countdown" role="timer" aria-label="Countdown to the Sangeet and Engagement Ceremony" data-target="{{ site.Data.story.wedding.countdown | default "2026-12-10T17:30:00+05:30" }}">
+    <div class="cd-box"><span class="cd-num" id="cd-d">—</span><span class="cd-label">Days</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-h">—</span><span class="cd-label">Hours</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-m">—</span><span class="cd-label">Minutes</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-s">—</span><span class="cd-label">Seconds</span></div>
+  </div>
+</section>
+
+<section class="section" id="story">
+  <p class="eyebrow">Our Story</p>
+  <h2>It Started With a Register</h2>
+  <div class="story-body">
+    <p class="reveal">{{ site.Data.story.story.p1 }}</p>
+    <p class="reveal">{{ site.Data.story.story.p2 }}</p>
+  </div>
+  <div class="chips reveal">
+{{ range site.Data.story.story.chips }}
+      <span class="chip">{{ . }}</span>
+{{ end }}
+  </div>
+</section>
+
+<section class="section" id="events">
+  <p class="eyebrow">Schedule</p>
+  <h2>The Celebrations</h2>
+{{ range site.Data.story.events }}
+  <div class="day reveal">
+    <h3>{{ .label }}</h3>
+{{ range .items }}
+    <article class="card reveal">
+      <p class="card-time">{{ .time }}</p>
+      <h4>{{ .name }}</h4>
+      <p class="card-venue">{{ .venue }}</p>
+      <a class="map-link" href="{{ site.Data.story.travel.maps }}" target="_blank" rel="noopener">View on Google Maps ↗</a>
+    </article>
+{{ end }}
+  </div>
+{{ end }}
+</section>
+
+<section class="section" id="venue">
+  <p class="eyebrow">Getting There</p>
+  <h2>Venue &amp; Travel</h2>
+  <p class="lead">All events take place at <strong>{{ site.Data.story.travel.venue_name }}, {{ site.Data.story.travel.venue_city }}</strong>.</p>
+  <a class="btn" href="{{ site.Data.story.travel.maps }}" target="_blank" rel="noopener">Open Venue in Google Maps ↗</a>
+
+{{ with site.Data.story.travel }}
+  {{ $routes := .routes }}
+  {{ if not $routes }}
+    {{ $routes = slice
+      (dict "icon" "🚂" "title" (printf "From %s" (.station_name | default "the Railway Station")) "meta" .station_route "link" .dir_station)
+      (dict "icon" "✈︎" "title" (printf "From %s" (.airport_name | default "the Airport")) "meta" .airport_route "link" .dir_airport) }}
+  {{ end }}
+  <div class="travel-grid">
+{{ range $routes }}{{ if .link }}
+    <a class="travel-card t-route reveal" href="{{ .link }}" target="_blank" rel="noopener">
+      <span class="t-icon" aria-hidden="true">{{ .icon }}</span>
+      <span class="t-body">
+        <strong class="t-title">{{ .title }}</strong>
+        <span class="t-meta">{{ .meta }}</span>
+      </span>
+      <span class="t-go" aria-hidden="true">↗</span><span class="sr">Get directions</span>
+    </a>
+{{ end }}{{ end }}
+  </div>
+{{ with .help }}{{ with .phone }}
+  <div class="t-help reveal">
+    <p class="t-help-title">{{ $.Site.Data.story.travel.help.title | default "Need help on the way?" }}</p>
+    <p>{{ $.Site.Data.story.travel.help.text }}</p>
+    {{ $tel := replaceRE "[^0-9+]" "" . }}
+    <p class="t-help-num">{{ with $.Site.Data.story.travel.help.name }}{{ . }} · {{ end }}<a href="tel:{{ $tel }}">{{ . }}</a></p>
+    <div class="t-help-actions">
+      <a class="btn" href="tel:{{ $tel }}">Call Now</a>
+      <a class="dir-btn" href="https://wa.me/{{ replaceRE "[^0-9]" "" . }}" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+{{ end }}{{ end }}
+{{ end }}
+</section>
+
+<section class="section" id="note">
+  <p class="eyebrow">{{ site.Data.story.note.title }}</p>
+  <h2>Before You Scroll On</h2>
+  <div class="note reveal">
+    <p id="note-text" data-text="{{ site.Data.story.note.text }}"></p>
+    <p class="note-sign">— {{ $names }}</p>
+  </div>
+</section>
+
+<figure class="artwork reveal" aria-label="Shiva and Shakti">
+  <img src='{{ "images/shiva-shakti.jpg" | relURL }}' alt="Shakti dancing in a flowing saffron dress, with Shiva standing in stillness behind her" width="540" height="964" loading="lazy" decoding="async">
+</figure>
+
+<section class="section" id="film">
+  {{ with site.Data.story.film.video }}
+  <p class="eyebrow">Now Showing</p>
+  <h2>{{ site.Data.story.film.title }}</h2>
+  <video class="film-video reveal" src='{{ . | relURL }}' poster='{{ site.Data.story.film.poster | relURL }}' controls playsinline preload="none"></video>
+  {{ with site.Data.story.film.line }}<p class="lead film-line">{{ . }}</p>{{ end }}
+  {{ else }}
+  <p class="eyebrow">Coming Soon</p>
+  <h2>{{ site.Data.story.film.title }}</h2>
+  <div class="film-frame reveal">
+    <div class="play">▶︎</div>
+    {{ with site.Data.story.film.line }}<p>{{ . }}</p>{{ end }}
+  </div>
+  {{ end }}
+</section>
+
+<section class="section" id="quiz-section">
+  <p class="eyebrow">A Small Reflection</p>
+  <h2>{{ site.Data.story.quiz.title }}</h2>
+  <p class="lead">{{ site.Data.story.quiz.intro }}</p>
+  <div class="quiz-card" id="quiz" aria-live="polite" data-hashtag="{{ site.Data.story.couple.hashtag }}">
+    <div class="q-start">
+      <div class="q-lotus" aria-hidden="true">🪷</div>
+      <p class="q-progress">{{ len site.Data.story.quiz.questions }} questions · about a minute</p>
+      <button class="btn" id="q-begin" type="button">{{ site.Data.story.quiz.start | default "Begin" }}</button>
+    </div>
+  </div>
+  <script id="quiz-data" type="application/json">{{ site.Data.story.quiz | jsonify | safeJS }}</script>
+</section>
+
+<section class="section" id="rsvp">
+{{ with site.Data.story.blessings }}
+  <p class="eyebrow">{{ .eyebrow | default "Send Your Blessings" }}</p>
+  <h2>{{ .title | default "Bless the Couple" }}</h2>
+  {{ with .lead }}<p class="lead">{{ . }}</p>{{ end }}
+  {{ $id := .formspree_id | default "" }}
+  <form id="blessings-form" action="{{ if hasPrefix $id "http" }}{{ $id }}{{ else }}https://formspree.io/f/{{ $id }}{{ end }}" method="POST">
+    <input type="hidden" name="_subject" value="Blessings for {{ $names }}">
+    <label for="rsvp-name">Your Name</label>
+    <input type="text" id="rsvp-name" name="name" required autocomplete="name">
+    <label for="rsvp-phone">Phone</label>
+    <input type="tel" id="rsvp-phone" name="phone" required autocomplete="tel" inputmode="tel"
+      pattern="\+?[0-9 ]{10,16}" placeholder="e.g. 98765 43210" aria-describedby="rsvp-phone-note"
+      title="Please enter your 10-digit mobile number">
+    <p class="field-note" id="rsvp-phone-note">Just so we know it's you — never shared.</p>
+    <label for="rsvp-msg">Your Wishes</label>
+    <div class="wish-chips">
+{{ range site.Data.story.wishes }}
+      <button type="button" class="chip wish-chip"{{ if findRE `\p{Devanagari}` . }} lang="hi"{{ end }} data-prompt="{{ . }}">{{ . }}</button>
+{{ end }}
+    </div>
+    <textarea id="rsvp-msg" name="message" rows="4" required placeholder="Tap a prompt above, or simply write from the heart."></textarea>
+    <button class="btn" type="submit">{{ .button | default "Send Blessings" }}</button>
+  </form>
+  <div class="blessing-thanks" id="blessing-thanks" hidden tabindex="-1">
+    <p class="bt-icon" aria-hidden="true">🙏</p>
+    <h3>{{ .thanks_title | default "Thank you for your blessings" }}</h3>
+    <p>{{ .thanks_text | default "Your words have reached us, and we'll treasure them." }}</p>
+  </div>
+  <p class="form-note">Your message goes only to the couple.</p>
+{{ end }}
+</section>
+
+</div>
+<div class="rod rod-bottom" aria-hidden="true"></div>
+<footer>
+  <p class="hashtag">{{ site.Data.story.couple.hashtag }}</p>
+  <p>{{ site.Data.story.couple.display }} · {{ site.Data.story.wedding.datesLine }}<br>Made with love, for the people we love.</p>
+</footer>
+<script src='{{ "js/main.js" | relURL }}' defer></script>
+</body>
+</html>

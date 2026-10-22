@@ -1,0 +1,15 @@
+{
+  "name": "wedding-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "browser": "npx @puppeteer/browsers install chrome-headless-shell@131.0.6778.204 --path \"$PWD/.browsers\"",
+    "stills": "node render.mjs --stills",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "js-yaml": "4.1.0",
+    "puppeteer-core": "23.11.1"
+  }
+}
