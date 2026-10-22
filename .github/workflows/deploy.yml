@@ -6,25 +6,56 @@ on:
   workflow_dispatch:
 
 permissions:
+  contents: read
   pages: write
   id-token: write
 
+# One deploy at a time; never cancel a deploy that is already publishing.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Same Hugo version as local development (hugo version → v0.136.5+extended)
       - uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.128.0'
-      - run: hugo --minify
+          hugo-version: '0.136.5'
+          extended: true
+
+      # Gives the live address: github.io now, or your custom domain once it is set in Settings → Pages
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build
+        run: hugo --gc --minify --environment production --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Check the build before publishing
+        run: |
+          set -e
+          test -s public/index.html
+          for f in css/style.css js/main.js images/og-image.png images/favicon.svg images/hero-placeholder.svg \
+                   images/ganesh.svg images/shiva-shakti.jpg videos/wedding-film.mp4 videos/wedding-film-poster.jpg; do
+            test -s "public/$f" || { echo "::error::Missing public/$f"; exit 1; }
+          done
+          if grep -qE 'localhost|192\.168\.|YOUR-USERNAME' public/index.html; then
+            echo "::error::index.html still points at a local/test address"; exit 1
+          fi
+          if grep -qE 'env-ribbon|data-simulate|LOCAL TEST' public/index.html; then
+            echo "::error::Local test mode leaked into the production build"; exit 1
+          fi
+          grep -qE 'property="?og:image"? content=["'\'']?https://' public/index.html || { echo "::error::og:image is not an absolute https URL"; exit 1; }
+          grep -q 'formspree.io/f/' public/index.html || { echo "::error::Blessings form is not connected to Formspree"; exit 1; }
+          echo "Build OK → ${{ steps.pages.outputs.base_url }}/"
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
+
   deploy:
     needs: build
     runs-on: ubuntu-latest

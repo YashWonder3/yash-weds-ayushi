@@ -188,3 +188,6 @@ html.intro #scroll-intro{display:block;position:fixed;inset:0;z-index:50;cursor:
 .blessing-thanks p{color:var(--ink-soft)}
 .bt-icon{font-size:2rem}
 .wish-chip[lang=hi]{font-family:'Tiro Devanagari Hindi',var(--serif);font-style:normal}
+
+/* ===== Local testing ribbon (development environment only) ===== */
+.env-ribbon{position:fixed;left:0;right:0;bottom:0;z-index:200;background:#1F6F5C;color:#fff;font:600 .72rem/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:.45rem .8rem;pointer-events:none;opacity:.92}

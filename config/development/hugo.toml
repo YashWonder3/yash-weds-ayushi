@@ -1,0 +1,9 @@
+# LOCAL TESTING ONLY — never deployed.
+# Shows a "LOCAL TEST" ribbon, hides the page from search engines, and blessings are
+# simulated (nothing reaches the real Formspree inbox).
+baseURL = "http://localhost:1313/"
+[params]
+  testMode = true
+  # To test real email delivery, create a SEPARATE Formspree form and put its URL here;
+  # leave empty to only simulate sending.
+  formspreeTest = ""

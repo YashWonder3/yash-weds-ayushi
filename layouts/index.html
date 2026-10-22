@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+{{ $test := site.Params.testMode }}
 {{ $names := replace site.Data.story.couple.display "❤" "&" }}
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ site.Data.story.meta.title }}</title>
+<title>{{ if $test }}[LOCAL TEST] {{ end }}{{ site.Data.story.meta.title }}</title>
+{{ if $test }}<meta name="robots" content="noindex, nofollow">{{ end }}
 <meta name="description" content="{{ site.Data.story.meta.description }}">
 <meta property="og:title" content="{{ site.Data.story.meta.title }}">
 <meta property="og:description" content="{{ site.Data.story.meta.description }}">
-<meta property="og:image" content="{{ site.Data.story.meta.baseurl }}images/og-image.png">
+<meta property="og:image" content="{{ "images/og-image.png" | absURL }}">
+<meta property="og:url" content="{{ "" | absURL }}">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#3A161B">
 <link rel="icon" href='{{ "images/favicon.svg" | relURL }}'>
@@ -23,6 +26,7 @@
 </script>
 </head>
 <body>
+{{ if $test }}<div class="env-ribbon" role="note">Local test · not the live site{{ if not site.Params.formspreeTest }} · blessings are simulated{{ end }}</div>{{ end }}
 <div id="scroll-intro" aria-hidden="true">
   <div class="rod si-rod si-top"></div>
   <div class="rod si-rod si-bottom"></div>
@@ -188,7 +192,8 @@
   <h2>{{ .title | default "Bless the Couple" }}</h2>
   {{ with .lead }}<p class="lead">{{ . }}</p>{{ end }}
   {{ $id := .formspree_id | default "" }}
-  <form id="blessings-form" action="{{ if hasPrefix $id "http" }}{{ $id }}{{ else }}https://formspree.io/f/{{ $id }}{{ end }}" method="POST">
+  {{ if $test }}{{ $id = site.Params.formspreeTest | default "" }}{{ end }}
+  <form id="blessings-form" action="{{ if not $id }}#{{ else if hasPrefix $id "http" }}{{ $id }}{{ else }}https://formspree.io/f/{{ $id }}{{ end }}" method="POST"{{ if and $test (not $id) }} data-simulate="1"{{ end }}>
     <input type="hidden" name="_subject" value="Blessings for {{ $names }}">
     <label for="rsvp-name">Your Name</label>
     <input type="text" id="rsvp-name" name="name" required autocomplete="name">

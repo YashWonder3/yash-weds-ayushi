@@ -1,0 +1,5 @@
+# LIVE SITE. GitHub Actions overrides baseURL with the real Pages address
+# (github.io or your custom domain); this value is only for local production builds.
+baseURL = "https://yashwonder3.github.io/yash-ayushi-wedding-card/"
+[params]
+  testMode = false

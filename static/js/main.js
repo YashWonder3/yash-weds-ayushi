@@ -188,7 +188,11 @@ if('IntersectionObserver' in window){
     var btn = form.querySelector('button[type=submit]');
     var label = btn.textContent;
     btn.disabled = true; btn.textContent = 'Sending…';
-    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } }).then(function(r){
+    // Local testing: pretend to send, so test blessings never reach the real inbox
+    var send = form.getAttribute('data-simulate')
+      ? function(){ console.info('[LOCAL TEST] Blessing not sent:', Object.fromEntries(new FormData(form))); return new Promise(function(r){ setTimeout(function(){ r({ ok: true }); }, 600); }); }
+      : function(){ return fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } }); };
+    send().then(function(r){
       if(!r.ok) throw new Error(r.status);
       form.hidden = true;
       thanks.hidden = false;

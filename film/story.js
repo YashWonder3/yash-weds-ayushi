@@ -1,8 +1,7 @@
 window.STORY = {
   "meta": {
     "title": "Yash ❤ Ayushi — Wedding Invitation",
-    "description": "Yash ❤ Ayushi are getting married! 11 December 2026 at Pearl Resort, Gangapur City.",
-    "baseurl": "https://YOUR-USERNAME.github.io/yash-ayushi-wedding/"
+    "description": "Yash ❤ Ayushi are getting married! 11 December 2026 at Pearl Resort, Gangapur City."
   },
   "couple": {
     "display": "Yash ❤ Ayushi",

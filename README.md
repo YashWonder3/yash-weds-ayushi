@@ -2,24 +2,23 @@
 
 Hugo static site, auto-deployed to GitHub Pages. All invite text lives in **one file**: `data/story.yaml`.
 
-## Deploy (one time, ~10 min)
+## Local testing vs live site
 
-1. Create a GitHub repository named `yash-ayushi-wedding` (or anything — but the name becomes part of the URL).
-2. Push these files to the `main` branch.
-3. In the repo: **Settings → Pages → Source: GitHub Actions**.
-4. Wait for the Actions run to go green — your invite is live at `https://YOUR-USERNAME.github.io/yash-ayushi-wedding/`.
-5. In `hugo.toml` and `data/story.yaml` (→ `meta.baseurl`), replace `YOUR-USERNAME` with your GitHub username.
+- `make serve` / `make phone` → **local test mode**: green "LOCAL TEST" ribbon, blessings are simulated (never sent).
+- `make check` → builds the **production** site exactly like GitHub and fails if any test content would go live.
+- Settings: `config/development/` (local) and `config/production/` (live). Details in DEPLOYMENT.md §1A.
+
+## Deploy
+
+Full step-by-step guide (GitHub Pages setup, safety checks, rollback, custom domain, Formspree):
+**[DEPLOYMENT.md](DEPLOYMENT.md)**
+
+Live at `https://yashwonder3.github.io/yash-ayushi-wedding-card/` after every push to `main`.
 
 ## Edit anything (works from the GitHub app on your phone)
 
-- Names, dates, times, venues → edit `data/story.yaml` → commit → site rebuilds in ~1 min.
+- Names, dates, times, venues → edit `data/story.yaml` → commit → site rebuilds in ~1 min (see DEPLOYMENT.md §3 checklist).
 - 11pm spelling fix? Same flow. One file, one commit, done.
-
-## WhatsApp preview (the grey-box test)
-
-After deploy, paste the link into a WhatsApp chat with yourself. The preview card should show the
-names, date, and image. If it shows nothing, check `meta.baseurl` in `data/story.yaml` — it must be
-the exact live URL, and replace `static/images/og-image.png` with your caricature artwork (1200×630).
 
 ## Blessings box (Formspree)
 
@@ -27,12 +26,6 @@ the exact live URL, and replace `static/images/og-image.png` with your caricatur
 2. Copy the form URL into `data/story.yaml` → `blessings.formspree_id` (full URL or just the ID).
 3. Blessings arrive in your email and in the Formspree dashboard (Submissions → export CSV).
    Guests stay on the card and see a thank-you note after sending.
-
-## Custom domain (optional)
-
-Buy a domain (e.g. `yashwedsayushi.in`), add it in **Settings → Pages → Custom domain**,
-create a `CNAME` file in `static/` containing the domain, and point the DNS (CNAME) at
-`YOUR-USERNAME.github.io`.
 
 ## Roadmap for v2
 
