@@ -13,7 +13,7 @@ Hugo static site, auto-deployed to GitHub Pages. All invite text lives in **one 
 Full step-by-step guide (GitHub Pages setup, safety checks, rollback, custom domain, Formspree):
 **[DEPLOYMENT.md](DEPLOYMENT.md)**
 
-Live at `https://yashwonder3.github.io/yash-ayushi-wedding-card/` after every push to `main`.
+Live at `https://cardbazaar.in/yash-weds-ayushi` after every push to `main`.
 
 ## Edit anything (works from the GitHub app on your phone)
 

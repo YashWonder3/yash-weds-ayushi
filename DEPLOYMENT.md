@@ -4,9 +4,10 @@ How this repository goes live on **GitHub Pages**, how to deploy updates safely,
 
 | | |
 |---|---|
-| Repository | `https://github.com/YashWonder3/yash-ayushi-wedding-card` |
+| Repository | `https://github.com/YashWonder3/yash-weds-ayushi` |
 | Branch that deploys | `main` |
-| Live address (default) | `https://yashwonder3.github.io/yash-ayushi-wedding-card/` |
+| Guest link | **`https://cardbazaar.in/yash-weds-ayushi`** |
+| Domain hub repository | `https://github.com/YashWonder3/YashWonder3.github.io` (owns `cardbazaar.in`) |
 | Site generator | Hugo **0.136.5 extended** (same version locally and on GitHub) |
 | Blessings form | Formspree: `https://formspree.io/f/moejbqlb` |
 
@@ -20,14 +21,14 @@ How this repository goes live on **GitHub Pages**, how to deploy updates safely,
  edit data/story.yaml …   push →   Actions: "Deploy to GitHub Pages"
                                    1. checkout code
                                    2. install Hugo 0.136.5
-                                   3. ask Pages for the live address  ──┐  (github.io or your domain)
+                                   3. ask Pages for the live address  ──┐  (cardbazaar.in/yash-weds-ayushi)
                                    4. hugo --gc --minify --baseURL …  ◄─┘
                                    5. SAFETY CHECK (stops if anything is wrong)
                                    6. upload ./public  →  deploy  →  live site  →  open link
 ```
 
 - **Built on GitHub, not on your Mac.** The `public/` folder is recreated on every deploy, so it is git-ignored on purpose.
-- **The address is automatic.** The workflow asks GitHub Pages for the current address. When you add a custom domain later, the site, the WhatsApp preview image and every link switch to it on the next deploy, with **no code change**.
+- **The address is automatic.** The workflow asks GitHub Pages for the current address and builds every link, the WhatsApp preview image included, from it. If that address is not `https://cardbazaar.in/yash-weds-ayushi/`, the run shows a yellow warning.
 - **Only one deploy runs at a time**, and a newer push never cancels a deploy that is already publishing.
 
 ### What is published, and what is not
@@ -51,7 +52,7 @@ The same code builds in two **environments**. Settings live in `config/`:
 |---|---|---|
 | Used by | `make serve`, `make phone`, `make preview` | `make build`, `make check`, **GitHub Actions** |
 | Settings file | `config/development/hugo.toml` | `config/production/hugo.toml` |
-| Address | `http://localhost:1313/` (or your Wi-Fi IP for the phone) | `https://yashwonder3.github.io/yash-ayushi-wedding-card/` or your custom domain |
+| Address | `http://localhost:1313/` (or your Wi-Fi IP for the phone) | `https://cardbazaar.in/yash-weds-ayushi/` |
 | Green **"LOCAL TEST · not the live site"** ribbon | ✅ shown at the bottom | ❌ never |
 | Browser tab title | `[LOCAL TEST] Yash ❤ Ayushi …` | `Yash ❤ Ayushi …` |
 | Blessings | **simulated:** the thank-you note shows, but nothing is sent | sent to the real Formspree form `moejbqlb` |
@@ -200,90 +201,90 @@ git push origin main     # redeploys the previous version automatically
 
 ---
 
-## 7. Custom domain (e.g. `yashwedsayushi.in`)
+## 7. Custom domain: `cardbazaar.in/yash-weds-ayushi`
 
-The steps below use `yashwedsayushi.in` as the example. Replace it with your real domain everywhere.
+### How the address is formed
 
-### 7.1 Buy the domain
-Any registrar works: GoDaddy, Hostinger, Namecheap, Cloudflare, BigRock and others. A `.in` or `.com` domain costs roughly ₹500–1,200 for the first year. Make sure you can edit **DNS records** in the registrar's dashboard.
+GitHub Pages serves every **project repository** at `<your domain>/<repository name>/` once your **user site** (the special repository `YashWonder3.github.io`) has a custom domain. So:
 
-Decide which address guests will use:
-- **Apex:** `yashwedsayushi.in`
-- **www:** `www.yashwedsayushi.in`
-- **Subdomain of a domain you already own:** e.g. `wedding.yourname.com`
+| Repository | Address |
+|---|---|
+| `YashWonder3.github.io` (domain hub, holds the CardBazaar home page) | `https://cardbazaar.in/` |
+| `yash-weds-ayushi` (this card) | `https://cardbazaar.in/yash-weds-ayushi` |
+| any future card repo, e.g. `rahul-weds-priya` | `https://cardbazaar.in/rahul-weds-priya` |
 
-Setting up both the apex and `www` (below) is best, because GitHub redirects one to the other automatically.
+**The repository name is the link.** Never set a custom domain on a card repository itself; only the hub has one.
 
-### 7.2 Verify the domain with GitHub first (prevents domain takeover)
-1. GitHub → your **profile picture → Settings → Pages → Add a domain** → enter `yashwedsayushi.in`.
-2. GitHub shows a **TXT record**, like this:
+### 7.1 Rename this repository
+1. GitHub → `yash-ayushi-wedding-card` → **Settings → General → Repository name** → `yash-weds-ayushi` → **Rename**.
+2. On your Mac:
+   ```bash
+   git remote set-url origin https://github.com/YashWonder3/yash-weds-ayushi.git
+   ```
 
-   | Type | Name / Host | Value |
-   |---|---|---|
-   | TXT | `_github-pages-challenge-YashWonder3` | *(the code GitHub shows)* |
+### 7.2 Create the domain hub repository
+The files are ready in `~/Downloads/cardbazaar.in/` (home page, 404 page, `CNAME`).
+1. GitHub → **New repository** → name **exactly** `YashWonder3.github.io` → **Public** → create (no README).
+2. Push the files:
+   ```bash
+   cd ~/Downloads/cardbazaar.in
+   git remote add origin https://github.com/YashWonder3/YashWonder3.github.io.git
+   git push -u origin main
+   ```
+3. That repository → **Settings → Pages → Source: Deploy from a branch → `main` / `(root)`** → Save.
 
-3. Add it at your registrar, wait a few minutes, then click **Verify**.
+### 7.3 Verify the domain with GitHub (prevents domain takeover)
+1. GitHub → **profile picture → Settings → Pages → Add a domain** → `cardbazaar.in`.
+2. GitHub shows a TXT record like `_github-pages-challenge-YashWonder3` with a code. Add it in Hostinger (§7.4), wait a few minutes, click **Verify**.
 
-### 7.3 Add the DNS records at your registrar
-First **delete any existing "parking", "forwarding" or default `A` / `CNAME` records** for `@` and `www`. They conflict with GitHub's records.
+### 7.4 DNS records in Hostinger
+**hPanel → Domains → `cardbazaar.in` → DNS / Nameservers → DNS records.**
 
-**Apex (`@`), all four of each:**
+First **delete** the existing parking records: the `A` record for `@` pointing to `2.57.91.91`, and the `CNAME`/`A` for `www`. They conflict with GitHub.
 
-| Type | Name / Host | Value | TTL |
+Then add:
+
+| Type | Name | Points to | TTL |
 |---|---|---|---|
-| A | `@` | `185.199.108.153` | 1 hour / Auto |
-| A | `@` | `185.199.109.153` | 1 hour / Auto |
-| A | `@` | `185.199.110.153` | 1 hour / Auto |
-| A | `@` | `185.199.111.153` | 1 hour / Auto |
-| AAAA | `@` | `2606:50c0:8000::153` | 1 hour / Auto |
-| AAAA | `@` | `2606:50c0:8001::153` | 1 hour / Auto |
-| AAAA | `@` | `2606:50c0:8002::153` | 1 hour / Auto |
-| AAAA | `@` | `2606:50c0:8003::153` | 1 hour / Auto |
+| A | `@` | `185.199.108.153` | 3600 |
+| A | `@` | `185.199.109.153` | 3600 |
+| A | `@` | `185.199.110.153` | 3600 |
+| A | `@` | `185.199.111.153` | 3600 |
+| AAAA | `@` | `2606:50c0:8000::153` | 3600 |
+| AAAA | `@` | `2606:50c0:8001::153` | 3600 |
+| AAAA | `@` | `2606:50c0:8002::153` | 3600 |
+| AAAA | `@` | `2606:50c0:8003::153` | 3600 |
+| CNAME | `www` | `yashwonder3.github.io` | 3600 |
+| TXT | `_github-pages-challenge-YashWonder3` | *(code from §7.3)* | 3600 |
 
-**www:**
+- The `www` value is **only** `yashwonder3.github.io`, with no path.
+- **Do not** add a wildcard (`*`) record. It allows subdomain takeover.
+- If there are **CAA** records, keep one that allows `letsencrypt.org`, or have none.
 
-| Type | Name / Host | Value |
-|---|---|---|
-| CNAME | `www` | `yashwonder3.github.io` |
-
-Important:
-- The CNAME value is **only** `yashwonder3.github.io`, **without** `/yash-ayushi-wedding-card`.
-- **Do not** add a wildcard record (`*`). Wildcards allow subdomain takeover.
-- **Cloudflare users:** set these records to **DNS only (grey cloud)** until GitHub has issued the HTTPS certificate.
-- If your registrar has **CAA** records, keep one that allows `letsencrypt.org` (or have no CAA records at all).
-
-**Subdomain instead** (e.g. `wedding.yourname.com`): only one record, `CNAME  wedding  →  yashwonder3.github.io`.
-
-### 7.4 Check DNS has spread (minutes to a few hours)
+Check that DNS has spread (minutes to a few hours):
 ```bash
-dig +short yashwedsayushi.in          # should list the four 185.199.x.153 addresses
-dig +short www.yashwedsayushi.in      # should show yashwonder3.github.io. then the same addresses
+dig +short cardbazaar.in          # the four 185.199.x.153 addresses, not 2.57.91.91
+dig +short www.cardbazaar.in      # yashwonder3.github.io. then the same addresses
 ```
-You can also use https://dnschecker.org.
 
-### 7.5 Connect the domain to the repository
-1. **Repo → Settings → Pages → Custom domain** → type `yashwedsayushi.in` → **Save**.
-2. Wait for **"DNS check successful"**.
-3. Tick **Enforce HTTPS**.
-   - The free certificate can take **up to 24 hours** (usually under an hour).
-   - If the box is greyed out, wait and refresh. Don't remove and re-add the domain repeatedly.
+### 7.5 Connect the domain to the hub
+1. `YashWonder3.github.io` → **Settings → Pages → Custom domain** → `cardbazaar.in` → **Save** (already filled in if the `CNAME` file was pushed).
+2. Wait for **"DNS check successful"**, then tick **Enforce HTTPS**. The free certificate takes up to 24 hours, usually under one.
 
-You don't need a `CNAME` file in the repository. With GitHub Actions deployments, the domain lives in **Settings → Pages**.
+### 7.6 Redeploy this card
+**This repo → Actions → "Deploy to GitHub Pages" → Run workflow.**
 
-### 7.6 Redeploy so every link uses the new domain
-**Actions → "Deploy to GitHub Pages" → Run workflow** (or push any commit).
+The run summary must show `Build OK → https://cardbazaar.in/yash-weds-ayushi/` with **no yellow warning**. A warning means §7.1 or §7.5 isn't finished yet.
 
-The workflow picks up the new address automatically. The page, the WhatsApp preview image and all assets now use `https://yashwedsayushi.in/`.
-
-Then:
-- [ ] Open `https://yashwedsayushi.in`: it shows the padlock 🔒 and the card.
-- [ ] Open `http://yashwedsayushi.in` and `https://www.yashwedsayushi.in`: both redirect to the main address.
-- [ ] The old `yashwonder3.github.io/yash-ayushi-wedding-card/` link redirects to the new domain, so links already sent keep working.
-- [ ] Paste the new link into WhatsApp to check the preview.
-- [ ] Update Formspree's allowed domain (§8).
+Then check:
+- [ ] `https://cardbazaar.in/yash-weds-ayushi` opens the card with the padlock 🔒 (GitHub adds the trailing `/` itself).
+- [ ] `http://cardbazaar.in/yash-weds-ayushi` and `https://www.cardbazaar.in/yash-weds-ayushi` redirect to it.
+- [ ] `https://cardbazaar.in/` shows the CardBazaar home page.
+- [ ] Paste the link into WhatsApp: the card image, title and description appear.
+- [ ] Update Formspree's allowed domain to `cardbazaar.in` (§8).
 
 ### 7.7 Renewal
-Turn on **auto-renew** at the registrar. If the domain expires, the card goes offline and someone else could buy the name.
+Turn on **auto-renew** in Hostinger. If the domain expires, every card goes offline and someone else could buy the name.
 
 ---
 
@@ -291,7 +292,7 @@ Turn on **auto-renew** at the registrar. If the domain expires, the card goes of
 
 1. Log in at **formspree.io** with the account that owns form **`moejbqlb`**.
 2. **Settings → Email notifications:** confirm the email address that receives blessings.
-3. **Settings → Restrict to domain** *(recommended, if your Formspree plan offers it)*: enter your live domain, `yashwonder3.github.io` (or `yashwedsayushi.in` once that's live). This stops other sites from posting into your form.
+3. **Settings → Restrict to domain** *(recommended, if your Formspree plan offers it)*: enter `cardbazaar.in`. This stops other sites from posting into your form.
    - Update it whenever the domain changes, or blessings from the card will be rejected.
 4. Keep **reCAPTCHA off**. The card sends blessings in the background so guests stay on the page, and reCAPTCHA would block that.
 5. Check the free-plan monthly submission limit on your plan page. Before the wedding, **Submissions → Export (CSV)** now and then so nothing is lost.

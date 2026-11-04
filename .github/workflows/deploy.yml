@@ -27,7 +27,7 @@ jobs:
           hugo-version: '0.136.5'
           extended: true
 
-      # Gives the live address: github.io now, or your custom domain once it is set in Settings → Pages
+      # Gives the live address: cardbazaar.in/<repo-name> once YashWonder3.github.io owns cardbazaar.in, github.io before that
       - id: pages
         uses: actions/configure-pages@v5
 
@@ -50,6 +50,10 @@ jobs:
           fi
           grep -qE 'property="?og:image"? content=["'\'']?https://' public/index.html || { echo "::error::og:image is not an absolute https URL"; exit 1; }
           grep -q 'formspree.io/f/' public/index.html || { echo "::error::Blessings form is not connected to Formspree"; exit 1; }
+          expected=$(sed -n 's/^baseURL = "\(.*\)"/\1/p' config/production/hugo.toml)
+          if [ "${{ steps.pages.outputs.base_url }}/" != "$expected" ]; then
+            echo "::warning::Live address is ${{ steps.pages.outputs.base_url }}/ but the guest link should be $expected (see DEPLOYMENT.md §7)"
+          fi
           echo "Build OK → ${{ steps.pages.outputs.base_url }}/"
 
       - uses: actions/upload-pages-artifact@v3

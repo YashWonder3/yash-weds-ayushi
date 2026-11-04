@@ -1,5 +1,6 @@
-# LIVE SITE. GitHub Actions overrides baseURL with the real Pages address
-# (github.io or your custom domain); this value is only for local production builds.
-baseURL = "https://yashwonder3.github.io/yash-ayushi-wedding-card/"
+# LIVE SITE. GitHub Actions overrides baseURL with the real Pages address and warns if it
+# is not this one. This repo is served at cardbazaar.in/<repo-name>/ because the
+# YashWonder3.github.io site owns cardbazaar.in (see DEPLOYMENT.md §7).
+baseURL = "https://cardbazaar.in/yash-weds-ayushi/"
 [params]
   testMode = false
