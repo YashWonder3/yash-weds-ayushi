@@ -178,6 +178,22 @@ if('IntersectionObserver' in window){
   });
 })();
 
+// Phone: exactly 10 digits. Typing stops at 10; a pasted/autofilled +91 or 0 prefix is dropped.
+(function(){
+  var phone = document.getElementById('rsvp-phone');
+  if(!phone) return;
+  phone.addEventListener('input', function(e){
+    var digits = phone.value.replace(/\D/g, '');
+    if(digits.length > 10 && e.inputType !== 'insertText') digits = digits.replace(/^(91|0)/, '');
+    digits = digits.slice(0, 10);
+    if(phone.value !== digits) phone.value = digits;
+    phone.setCustomValidity('');
+  });
+  phone.addEventListener('invalid', function(){
+    phone.setCustomValidity(phone.value ? 'Please enter all 10 digits of your mobile number' : '');
+  });
+})();
+
 // Blessings: send without leaving the card, then say thank you
 (function(){
   var form = document.getElementById('blessings-form');

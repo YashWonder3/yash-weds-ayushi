@@ -166,10 +166,10 @@
     <label for="rsvp-name">Your Name</label>
     <input type="text" id="rsvp-name" name="name" required autocomplete="name">
     <label for="rsvp-phone">Phone</label>
-    <input type="tel" id="rsvp-phone" name="phone" required autocomplete="tel" inputmode="tel"
-      pattern="\+?[0-9 ]{10,16}" placeholder="e.g. 98765 43210" aria-describedby="rsvp-phone-note"
+    <input type="tel" id="rsvp-phone" name="phone" required autocomplete="tel-national" inputmode="numeric"
+      pattern="[0-9]{10}" placeholder="e.g. 9876543210" aria-describedby="rsvp-phone-note"
       title="Please enter your 10-digit mobile number">
-    <p class="field-note" id="rsvp-phone-note">Just so we know it's you — never shared.</p>
+    <p class="field-note" id="rsvp-phone-note">10-digit mobile number. Just so we know it's you — never shared.</p>
     <label for="rsvp-msg">Your Wishes</label>
     <div class="wish-chips">
       <button type="button" class="chip wish-chip" data-prompt="One piece of marriage advice you swear by…">One piece of marriage advice you swear by…</button>
