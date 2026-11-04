@@ -104,7 +104,7 @@
 // Countdown to the Sangeet & Engagement (target set in data/story.yaml -> wedding.countdown)
 (function(){
   var box = document.getElementById('countdown');
-  var target = new Date((box && box.getAttribute('data-target')) || '2026-12-10T17:30:00+05:30').getTime();
+  var target = new Date((box && box.getAttribute('data-target')) || '2026-12-10T16:00:00+05:30').getTime();
   function el(id){return document.getElementById(id)}
   function pad(n){return String(n).padStart(2,'0')}
   function tick(){

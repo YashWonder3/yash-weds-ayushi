@@ -10,7 +10,8 @@ window.STORY = {
   },
   "wedding": {
     "datesLine": "11 December 2026",
-    "city": "Pearl Resort · Gangapur City"
+    "city": "Pearl Resort · Gangapur City",
+    "countdown": "2026-12-10T16:00:00+05:30"
   },
   "families": {
     "groom": "Mr. Mukesh Khandelwal & Mrs. RajKumari Khandelwal",
@@ -31,7 +32,7 @@ window.STORY = {
       "items": [
         {
           "name": "Sangeet and Engagement Ceremony",
-          "time": "5:30 PM",
+          "time": "4:00 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]
