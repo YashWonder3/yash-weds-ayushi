@@ -27,7 +27,7 @@ jobs:
           hugo-version: '0.136.5'
           extended: true
 
-      # Gives the live address: cardbazaar.in/<repo-name> once YashWonder3.github.io owns cardbazaar.in, github.io before that
+      # Gives the live address: www.cardbazaar.in/<repo-name>, because YashWonder3.github.io owns www.cardbazaar.in
       - id: pages
         uses: actions/configure-pages@v5
 

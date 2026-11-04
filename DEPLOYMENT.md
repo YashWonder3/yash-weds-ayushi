@@ -6,8 +6,8 @@ How this repository goes live on **GitHub Pages**, how to deploy updates safely,
 |---|---|
 | Repository | `https://github.com/YashWonder3/yash-weds-ayushi` |
 | Branch that deploys | `main` |
-| Guest link | **`https://cardbazaar.in/yash-weds-ayushi`** |
-| Domain hub repository | `https://github.com/YashWonder3/YashWonder3.github.io` (owns `cardbazaar.in`) |
+| Guest link | **`https://www.cardbazaar.in/yash-weds-ayushi`** |
+| Domain hub repository | `https://github.com/YashWonder3/YashWonder3.github.io` (owns `www.cardbazaar.in`) |
 | Site generator | Hugo **0.136.5 extended** (same version locally and on GitHub) |
 | Blessings form | Formspree: `https://formspree.io/f/moejbqlb` |
 
@@ -21,14 +21,14 @@ How this repository goes live on **GitHub Pages**, how to deploy updates safely,
  edit data/story.yaml …   push →   Actions: "Deploy to GitHub Pages"
                                    1. checkout code
                                    2. install Hugo 0.136.5
-                                   3. ask Pages for the live address  ──┐  (cardbazaar.in/yash-weds-ayushi)
+                                   3. ask Pages for the live address  ──┐  (www.cardbazaar.in/yash-weds-ayushi)
                                    4. hugo --gc --minify --baseURL …  ◄─┘
                                    5. SAFETY CHECK (stops if anything is wrong)
                                    6. upload ./public  →  deploy  →  live site  →  open link
 ```
 
 - **Built on GitHub, not on your Mac.** The `public/` folder is recreated on every deploy, so it is git-ignored on purpose.
-- **The address is automatic.** The workflow asks GitHub Pages for the current address and builds every link, the WhatsApp preview image included, from it. If that address is not `https://cardbazaar.in/yash-weds-ayushi/`, the run shows a yellow warning.
+- **The address is automatic.** The workflow asks GitHub Pages for the current address and builds every link, the WhatsApp preview image included, from it. If that address is not `https://www.cardbazaar.in/yash-weds-ayushi/`, the run shows a yellow warning.
 - **Only one deploy runs at a time**, and a newer push never cancels a deploy that is already publishing.
 
 ### What is published, and what is not
@@ -52,7 +52,7 @@ The same code builds in two **environments**. Settings live in `config/`:
 |---|---|---|
 | Used by | `make serve`, `make phone`, `make preview` | `make build`, `make check`, **GitHub Actions** |
 | Settings file | `config/development/hugo.toml` | `config/production/hugo.toml` |
-| Address | `http://localhost:1313/` (or your Wi-Fi IP for the phone) | `https://cardbazaar.in/yash-weds-ayushi/` |
+| Address | `http://localhost:1313/` (or your Wi-Fi IP for the phone) | `https://www.cardbazaar.in/yash-weds-ayushi/` |
 | Green **"LOCAL TEST · not the live site"** ribbon | ✅ shown at the bottom | ❌ never |
 | Browser tab title | `[LOCAL TEST] Yash ❤ Ayushi …` | `Yash ❤ Ayushi …` |
 | Blessings | **simulated:** the thank-you note shows, but nothing is sent | sent to the real Formspree form `moejbqlb` |
@@ -201,17 +201,17 @@ git push origin main     # redeploys the previous version automatically
 
 ---
 
-## 7. Custom domain: `cardbazaar.in/yash-weds-ayushi`
+## 7. Custom domain: `www.cardbazaar.in/yash-weds-ayushi`
 
 ### How the address is formed
 
-GitHub Pages serves every **project repository** at `<your domain>/<repository name>/` once your **user site** (the special repository `YashWonder3.github.io`) has a custom domain. So:
+GitHub Pages serves every **project repository** at `www.cardbazaar.in/<repository name>/` once your **user site** (the special repository `YashWonder3.github.io`) has a custom domain. So:
 
 | Repository | Address |
 |---|---|
-| `YashWonder3.github.io` (domain hub, holds the CardBazaar home page) | `https://cardbazaar.in/` |
-| `yash-weds-ayushi` (this card) | `https://cardbazaar.in/yash-weds-ayushi` |
-| any future card repo, e.g. `rahul-weds-priya` | `https://cardbazaar.in/rahul-weds-priya` |
+| `YashWonder3.github.io` (domain hub, holds the CardBazaar home page) | `https://www.cardbazaar.in/` |
+| `yash-weds-ayushi` (this card) | `https://www.cardbazaar.in/yash-weds-ayushi` |
+| any future card repo, e.g. `rahul-weds-priya` | `https://www.cardbazaar.in/rahul-weds-priya` |
 
 **The repository name is the link.** Never set a custom domain on a card repository itself; only the hub has one.
 
@@ -234,7 +234,7 @@ The files are ready in `~/Downloads/cardbazaar.in/` (home page, 404 page, `CNAME
 3. That repository → **Settings → Pages → Source: Deploy from a branch → `main` / `(root)`** → Save.
 
 ### 7.3 Verify the domain with GitHub (prevents domain takeover)
-1. GitHub → **profile picture → Settings → Pages → Add a domain** → `cardbazaar.in`.
+1. GitHub → **profile picture → Settings → Pages → Add a domain** → `cardbazaar.in` (verifying the main domain also covers `www`).
 2. GitHub shows a TXT record like `_github-pages-challenge-YashWonder3` with a code. Add it in Hostinger (§7.4), wait a few minutes, click **Verify**.
 
 ### 7.4 DNS records in Hostinger
@@ -268,20 +268,22 @@ dig +short www.cardbazaar.in      # yashwonder3.github.io. then the same address
 ```
 
 ### 7.5 Connect the domain to the hub
-1. `YashWonder3.github.io` → **Settings → Pages → Custom domain** → `cardbazaar.in` → **Save** (already filled in if the `CNAME` file was pushed).
+1. `YashWonder3.github.io` → **Settings → Pages → Custom domain** → `www.cardbazaar.in` → **Save** (already filled in from the `CNAME` file).
 2. Wait for **"DNS check successful"**, then tick **Enforce HTTPS**. The free certificate takes up to 24 hours, usually under one.
+3. **This card repo → Settings → Pages → tick Enforce HTTPS** as well. Card repos have their own HTTPS switch; while it is off, GitHub gives the build an `http://` address and the safety check stops the deploy (`og:image is not an absolute https URL`). The box only becomes clickable once the hub's certificate is issued.
 
 ### 7.6 Redeploy this card
 **This repo → Actions → "Deploy to GitHub Pages" → Run workflow.**
 
-The run summary must show `Build OK → https://cardbazaar.in/yash-weds-ayushi/` with **no yellow warning**. A warning means §7.1 or §7.5 isn't finished yet.
+The run summary must show `Build OK → https://www.cardbazaar.in/yash-weds-ayushi/` with **no yellow warning**. A warning means §7.1 or §7.5 isn't finished yet. A red `og:image is not an absolute https URL` means step 7.5.3 (Enforce HTTPS on this repo) is still off.
 
 Then check:
-- [ ] `https://cardbazaar.in/yash-weds-ayushi` opens the card with the padlock 🔒 (GitHub adds the trailing `/` itself).
-- [ ] `http://cardbazaar.in/yash-weds-ayushi` and `https://www.cardbazaar.in/yash-weds-ayushi` redirect to it.
-- [ ] `https://cardbazaar.in/` shows the CardBazaar home page.
+- [ ] `https://www.cardbazaar.in/yash-weds-ayushi` opens the card with the padlock 🔒 (GitHub adds the trailing `/` itself).
+- [ ] `http://www.cardbazaar.in/yash-weds-ayushi` and `http://cardbazaar.in/yash-weds-ayushi` redirect to it.
+- [ ] `https://www.cardbazaar.in/` shows the CardBazaar home page.
+- [ ] Always share the **`www.`** link. The certificate covers only `www.cardbazaar.in`, so `https://cardbazaar.in/…` without `www` shows a security warning.
 - [ ] Paste the link into WhatsApp: the card image, title and description appear.
-- [ ] Update Formspree's allowed domain to `cardbazaar.in` (§8).
+- [ ] Update Formspree's allowed domain to `www.cardbazaar.in` (§8).
 
 ### 7.7 Renewal
 Turn on **auto-renew** in Hostinger. If the domain expires, every card goes offline and someone else could buy the name.
@@ -292,7 +294,7 @@ Turn on **auto-renew** in Hostinger. If the domain expires, every card goes offl
 
 1. Log in at **formspree.io** with the account that owns form **`moejbqlb`**.
 2. **Settings → Email notifications:** confirm the email address that receives blessings.
-3. **Settings → Restrict to domain** *(recommended, if your Formspree plan offers it)*: enter `cardbazaar.in`. This stops other sites from posting into your form.
+3. **Settings → Restrict to domain** *(recommended, if your Formspree plan offers it)*: enter `www.cardbazaar.in`. This stops other sites from posting into your form.
    - Update it whenever the domain changes, or blessings from the card will be rejected.
 4. Keep **reCAPTCHA off**. The card sends blessings in the background so guests stay on the page, and reCAPTCHA would block that.
 5. Check the free-plan monthly submission limit on your plan page. Before the wedding, **Submissions → Export (CSV)** now and then so nothing is lost.
