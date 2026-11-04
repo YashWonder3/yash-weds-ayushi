@@ -39,7 +39,7 @@ events:
     label: "Friday · 11 December 2026"
     items:
       - { name: "Haldi",            time: "11:00 AM", venue: "Pearl Resort, Gangapur City" }
-      - { name: "Wedding Ceremony", time: "6:00 PM",  venue: "Pearl Resort, Gangapur City" }
+      - { name: "Wedding Ceremony", time: "5:00 PM",  venue: "Pearl Resort, Gangapur City" }
 
 # --- Travel: distances/times are APPROXIMATE — verify on Google Maps, then edit here ---
 travel:

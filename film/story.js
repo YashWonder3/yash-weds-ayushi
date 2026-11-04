@@ -47,7 +47,7 @@ window.STORY = {
         },
         {
           "name": "Wedding Ceremony",
-          "time": "6:00 PM",
+          "time": "5:00 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]
