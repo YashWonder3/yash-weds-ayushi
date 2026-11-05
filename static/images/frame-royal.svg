@@ -1,0 +1,64 @@
+<!-- Royal Rajasthani card frame, used as a 9-slice border-image (slice 120).
+     Corners are 120x120, each edge repeats one 80-wide jharokha arch. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+  <defs>
+    <g id="edge">
+      <rect width="320" height="48" fill="#55212A"/>
+      <path d="M0 5.5H320M0 42.5H320" stroke="#D9B36C" stroke-width="2.4" fill="none"/>
+      <path d="M0 47H320" stroke="#C19A5B" stroke-width="2" fill="none"/>
+      <!-- jharokha arch -->
+      <path d="M126 39V30C126 26 129 24 132 24C133 20 137 18 141 18C143 14 148 12 152 12C155 11 158 10 160 8C162 10 165 11 168 12C172 12 177 14 179 18C183 18 187 20 188 24C191 24 194 26 194 30V39Z" fill="#7E2A33" stroke="#D9B36C" stroke-width="2.4" stroke-linejoin="round"/>
+      <!-- lotus inside the arch -->
+      <path d="M160 18C164 23 164 28 160 33C156 28 156 23 160 18Z" fill="#E9C987"/>
+      <path d="M150 23C155 25 158 29 159 34C154 33 150 29 150 23ZM170 23C165 25 162 29 161 34C166 33 170 29 170 23Z" fill="#D9B36C"/>
+      <!-- beads between arches -->
+      <circle cx="120" cy="24" r="4.2" fill="#E9C987"/>
+      <circle cx="200" cy="24" r="4.2" fill="#E9C987"/>
+      <!-- hanging scallop fringe -->
+      <path d="M120 49Q130 62 140 49Q150 62 160 49Q170 62 180 49Q190 62 200 49" fill="none" stroke="#C19A5B" stroke-width="2.2"/>
+      <circle cx="130" cy="60" r="2.3" fill="#B4664A"/>
+      <circle cx="150" cy="60" r="2.3" fill="#B4664A"/>
+      <circle cx="170" cy="60" r="2.3" fill="#B4664A"/>
+      <circle cx="190" cy="60" r="2.3" fill="#B4664A"/>
+      <path d="M80 49Q90 62 100 49Q110 62 120 49" fill="none" stroke="#C19A5B" stroke-width="2.2"/>
+      <circle cx="90" cy="60" r="2.3" fill="#B4664A"/>
+      <circle cx="110" cy="60" r="2.3" fill="#B4664A"/>
+      <path d="M200 49Q210 62 220 49Q230 62 240 49" fill="none" stroke="#C19A5B" stroke-width="2.2"/>
+      <circle cx="210" cy="60" r="2.3" fill="#B4664A"/>
+      <circle cx="230" cy="60" r="2.3" fill="#B4664A"/>
+    </g>
+    <path id="petal" d="M0-37C6-31 7-23 0-15C-7-23-6-31 0-37Z"/>
+    <g id="spray">
+      <path d="M0 0C-5-8-5-16 0-25C5-16 5-8 0 0Z" fill="#7E2A33" stroke="#C19A5B" stroke-width="2"/>
+      <path d="M-3 1C-11-1-17-7-19-16C-11-15-5-9-3 1ZM3 1C11-1 17-7 19-16C11-15 5-9 3 1Z" fill="#D9B36C"/>
+      <circle cy="-31" r="2.6" fill="#B4664A"/>
+    </g>
+    <g id="corner">
+      <use href="#spray" transform="translate(73 73) rotate(135)"/>
+      <!-- lotus medallion -->
+      <g transform="translate(44 44)">
+        <circle r="41" fill="#55212A" stroke="#D9B36C" stroke-width="2.4"/>
+        <g fill="#D9B36C">
+          <use href="#petal"/>
+          <use href="#petal" transform="rotate(45)"/>
+          <use href="#petal" transform="rotate(90)"/>
+          <use href="#petal" transform="rotate(135)"/>
+          <use href="#petal" transform="rotate(180)"/>
+          <use href="#petal" transform="rotate(225)"/>
+          <use href="#petal" transform="rotate(270)"/>
+          <use href="#petal" transform="rotate(315)"/>
+        </g>
+        <circle r="15" fill="#7E2A33" stroke="#E9C987" stroke-width="2.2"/>
+        <circle r="6" fill="#E9C987"/>
+      </g>
+    </g>
+  </defs>
+  <use href="#edge"/>
+  <use href="#edge" transform="rotate(90 160 160)"/>
+  <use href="#edge" transform="rotate(180 160 160)"/>
+  <use href="#edge" transform="rotate(270 160 160)"/>
+  <use href="#corner"/>
+  <use href="#corner" transform="rotate(90 160 160)"/>
+  <use href="#corner" transform="rotate(180 160 160)"/>
+  <use href="#corner" transform="rotate(270 160 160)"/>
+</svg>

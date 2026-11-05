@@ -6,9 +6,11 @@
 <title>{{ site.Data.story.meta.title }}</title>
 <meta http-equiv="refresh" content="4; url={{ "" | relURL }}">
 <link rel="icon" href='{{ "images/favicon.svg" | relURL }}'>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lora&display=swap" rel="stylesheet">
 <link rel="stylesheet" href='{{ "css/style.css" | relURL }}'>
 </head>
 <body>
+<div class="rod rod-top" aria-hidden="true"></div>
 <div class="page-frame">
   <section class="section" style="min-height:80svh;display:flex;flex-direction:column;justify-content:center">
     <p class="eyebrow">Oops</p>
@@ -17,5 +19,6 @@
     <p><a class="btn" href='{{ "" | relURL }}'>Open the Invitation</a></p>
   </section>
 </div>
+<div class="rod rod-bottom" aria-hidden="true"></div>
 </body>
 </html>

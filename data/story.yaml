@@ -19,8 +19,10 @@ wedding:
   countdown: "2026-12-10T16:00:00+05:30"   # start of the first event (Sangeet, 4:00 PM IST); keep in sync with events.d1
 
 families:
-  groom: "Mr. Mukesh Khandelwal & Mrs. RajKumari Khandelwal"
-  bride: "Dr. Rajendra Khandelwal & Mrs. Sushma Khandelwal"
+  groom_elders: "GS/o Lt. Smt. Mohra Devi & Lt. Shri Johari Lal"
+  groom: "S/o Smt. RajKumari & Shri Mukesh Khandelwal"
+  bride_elders: "GD/o Lt. Smt. Kamla Khandelwal & Lt. Shri Gangasahay Khandelwal"
+  bride: "D/o Smt. Sushma & Shri Rajendra Khandelwal"
 
 story:
   p1: "Yash first saw Ayushi at office onboarding — and somehow left without her name. So he found the only honest source there was: the onboarding register."

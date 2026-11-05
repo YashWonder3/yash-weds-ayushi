@@ -1,0 +1,16 @@
+<!-- One repeating tile of the frame band in frame-royal.svg; closes the first page of the card. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 62" width="80" height="62">
+  <rect width="80" height="48" fill="#55212A"/>
+  <path d="M0 5.5H80M0 42.5H80" stroke="#D9B36C" stroke-width="2.4" fill="none"/>
+  <path d="M0 47H80" stroke="#C19A5B" stroke-width="2" fill="none"/>
+  <path d="M6 39V30C6 26 9 24 12 24C13 20 17 18 21 18C23 14 28 12 32 12C35 11 38 10 40 8C42 10 45 11 48 12C52 12 57 14 59 18C63 18 67 20 68 24C71 24 74 26 74 30V39Z" fill="#7E2A33" stroke="#D9B36C" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M40 18C44 23 44 28 40 33C36 28 36 23 40 18Z" fill="#E9C987"/>
+  <path d="M30 23C35 25 38 29 39 34C34 33 30 29 30 23ZM50 23C45 25 42 29 41 34C46 33 50 29 50 23Z" fill="#D9B36C"/>
+  <circle cx="0" cy="24" r="4.2" fill="#E9C987"/>
+  <circle cx="80" cy="24" r="4.2" fill="#E9C987"/>
+  <path d="M0 49Q10 62 20 49Q30 62 40 49Q50 62 60 49Q70 62 80 49" fill="none" stroke="#C19A5B" stroke-width="2.2"/>
+  <circle cx="10" cy="60" r="2" fill="#B4664A"/>
+  <circle cx="30" cy="60" r="2" fill="#B4664A"/>
+  <circle cx="50" cy="60" r="2" fill="#B4664A"/>
+  <circle cx="70" cy="60" r="2" fill="#B4664A"/>
+</svg>

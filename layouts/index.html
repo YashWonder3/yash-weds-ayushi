@@ -17,7 +17,7 @@
 <link rel="icon" href='{{ "images/favicon.svg" | relURL }}'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,600&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <link rel="stylesheet" href='{{ "css/style.css" | relURL }}'>
 <script>
   // Royal scroll intro: only on a fresh open (no #link), and never for reduced motion.
@@ -52,10 +52,14 @@
   <p class="divider">❦</p>
   <p class="dates">{{ site.Data.story.wedding.datesLine }}</p>
   <p class="venue-line">{{ site.Data.story.wedding.city }}</p>
+  {{/* Names may only wrap at the "&", never inside a person's name */}}
+  {{ $amp := "</i> &amp; <i>" }}
   <p class="families">Together with their families<br>
-    <span>{{ site.Data.story.families.groom }}</span><br>
+    <small><i>{{ replace (site.Data.story.families.groom_elders | htmlEscape) " &amp; " $amp | safeHTML }}</i></small><br>
+    <span><i>{{ replace (site.Data.story.families.groom | htmlEscape) " &amp; " $amp | safeHTML }}</i></span><br>
     <em>&amp;</em><br>
-    <span>{{ site.Data.story.families.bride }}</span>
+    <small><i>{{ replace (site.Data.story.families.bride_elders | htmlEscape) " &amp; " $amp | safeHTML }}</i></small><br>
+    <span><i>{{ replace (site.Data.story.families.bride | htmlEscape) " &amp; " $amp | safeHTML }}</i></span>
   </p>
   <a class="btn" href="#events">Open the Invitation ↓</a>
 </header>
