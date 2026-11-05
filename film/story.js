@@ -14,7 +14,7 @@ window.STORY = {
     "countdown": "2026-12-10T16:00:00+05:30"
   },
   "families": {
-    "groom_elders": "GS/o Lt. Smt. Mohra Devi & Lt. Shri Johari Lal",
+    "groom_elders": "GS/o Lt. Smt. Mohra Devi & Lt. Shri Johari Lal Saraf",
     "groom": "S/o Smt. RajKumari & Shri Mukesh Khandelwal",
     "bride_elders": "GD/o Lt. Smt. Kamla Khandelwal & Lt. Shri Gangasahay Khandelwal",
     "bride": "D/o Smt. Sushma & Shri Rajendra Khandelwal"
