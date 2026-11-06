@@ -16,7 +16,7 @@ const logo = readFileSync(path.join(root, 'static', 'images', 'hero-placeholder.
 const html = `<!doctype html><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lora&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;width:1200px;height:630px;background:#FAF5EE;font-family:'Lora',serif;color:#4A342E}
+  body{margin:0;width:1200px;height:630px;background:#FAF5EE;font-family:'Lora',serif;font-variant-numeric:lining-nums;color:#4A342E}
   .f{position:absolute;inset:28px;border:2px solid #C19A5B}.f2{position:absolute;inset:42px;border:1px solid rgba(193,154,91,.6)}
   .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
   .logo{width:190px;height:141px;margin-bottom:14px}.logo svg{width:100%;height:100%}

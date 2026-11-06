@@ -49,7 +49,7 @@ window.STORY = {
         },
         {
           "name": "Wedding Ceremony",
-          "time": "5:00 PM",
+          "time": "7:00 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]
@@ -75,6 +75,10 @@ window.STORY = {
     "title": "Our Little Film",
     "video": "videos/wedding-film.mp4",
     "poster": "videos/wedding-film-poster.jpg",
+    "music": "assets-src/Tumhi Dekho Naa (Sitar Lofi).mp3",
+    "music_start": "0:26"
+  },
+  "invite_video": {
     "music": "assets-src/Tumhi Dekho Naa (Sitar Lofi).mp3",
     "music_start": "0:26"
   },

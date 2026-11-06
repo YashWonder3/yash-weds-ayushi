@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our Little Film</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Infant:wght@500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
   html,body{margin:0;background:#2b201c;height:100%}
   body{display:flex;align-items:center;justify-content:center}
@@ -358,7 +358,8 @@ function sceneFinale(t) {
   text(nameB, W / 2 + 60, 262, { size: 92, align: 'left' });
   heart(W / 2, 265, 40 + Math.sin(t * 5) * 2, C.terra);
   text('❦', W / 2, 340, { size: 24, color: C.gold, alpha: prog(t, 27, 27.6) });
-  text(S.wedding.datesLine, W / 2, 398, { size: 46, alpha: prog(t, 27.1, 27.7) });
+  // Cormorant Infant has normal numerals; canvas can't switch Cormorant Garamond's old-style ones
+  text(S.wedding.datesLine, W / 2, 398, { size: 46, font: '"Cormorant Infant", Georgia, serif', alpha: prog(t, 27.1, 27.7) });
   text(S.wedding.city, W / 2, 452, { size: 26, color: C.soft, style: 'italic', alpha: prog(t, 27.4, 28) });
   text(S.couple.hashtag, W / 2, 540, { size: 22, font: BODY, color: C.terra, spacing: 2, alpha: prog(t, 27.9, 28.5) });
   text('See you there.', W / 2, 600, { size: 30, style: 'italic', alpha: prog(t, 28.3, 29) });

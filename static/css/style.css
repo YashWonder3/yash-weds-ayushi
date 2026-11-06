@@ -1,7 +1,7 @@
 :root{--love:#7E2A33;--royal:#3A161B;--royal-2:#55212A;--cream:#FAF5EE;--paper:#FFFDF8;--ink:#4A342E;--ink-soft:#7A635B;--terra:#B4664A;--terra-dark:#9A5138;--gold:#C19A5B;--frame:clamp(44px,9vw,72px);--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--body:'Lora',Georgia,serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:radial-gradient(ellipse at top,var(--royal-2),var(--royal) 70%) fixed var(--royal);color:var(--ink);font-family:var(--body);line-height:1.7;font-size:1.02rem;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(ellipse at top,var(--royal-2),var(--royal) 70%) fixed var(--royal);color:var(--ink);font-family:var(--body);font-variant-numeric:lining-nums;line-height:1.7;font-size:1.02rem;-webkit-font-smoothing:antialiased}
 .page-frame{width:min(700px,calc(100% - 16px));margin:-12px auto;padding:12px calc(var(--frame)*.517 + 6px) 0;position:relative;
   background:var(--cream);box-shadow:0 0 40px rgba(0,0,0,.45)}
 .page-frame::before{content:"";position:absolute;inset:12px 0;border:var(--frame) solid transparent;border-image:url("../images/frame-royal.svg") 120 round;pointer-events:none}

@@ -1,7 +1,7 @@
 # Yash & Ayushi Wedding Invite - convenience commands
 # Usage: make serve | make build | make deploy | make clean | make film | make preview
 
-.PHONY: serve phone serve-public build check clean deploy film preview og music
+.PHONY: serve phone serve-public build check clean deploy film preview og music invite invite-music
 
 serve:          ## LOCAL TEST server with live reload (http://localhost:1313) — test ribbon, simulated blessings
 	hugo server -D --disableFastRender --noHTTPCache --environment development
@@ -46,3 +46,11 @@ og:             ## Re-render static/images/og-image.png (WhatsApp preview card) 
 
 music:          ## Add/replace the song in the film (film.music in data/story.yaml) — no re-render needed
 	cd film && ([ -d node_modules ] || npm install --silent) && node music.mjs
+
+invite:         ## Render the WhatsApp invite video to video/output/ from data/story.yaml (see video/README.md)
+	cd film && ([ -d node_modules ] || npm install --silent) && ([ -d .browsers ] || npm run browser)
+	node video/render.mjs
+
+invite-music:   ## Change the song in the invite video (invite_video.music in data/story.yaml) - no re-render needed
+	cd film && ([ -d node_modules ] || npm install --silent)
+	node video/music.mjs

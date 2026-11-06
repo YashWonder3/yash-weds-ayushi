@@ -41,7 +41,7 @@ events:
     label: "Friday · 11 December 2026"
     items:
       - { name: "Haldi",            time: "11:00 AM", venue: "Pearl Resort, Gangapur City" }
-      - { name: "Wedding Ceremony", time: "5:00 PM",  venue: "Pearl Resort, Gangapur City" }
+      - { name: "Wedding Ceremony", time: "7:00 PM",  venue: "Pearl Resort, Gangapur City" }
 
 # --- Travel: distances/times are APPROXIMATE — verify on Google Maps, then edit here ---
 travel:
@@ -69,6 +69,13 @@ film:
   poster: "videos/wedding-film-poster.jpg"
   # Song for the film: put the file in assets-src/, uncomment both lines, then run `make music`.
   # music_start = where in the song to begin (minutes:seconds). Fades in/out automatically.
+  music: "assets-src/Tumhi Dekho Naa (Sitar Lofi).mp3"
+  music_start: "0:26"
+
+# --- The WhatsApp invite video (see video/README.md): main details with a song.
+#     After changing the song or its start point, run `make invite-music`.
+#     After changing any other details in this file, run `make invite`.
+invite_video:
   music: "assets-src/Tumhi Dekho Naa (Sitar Lofi).mp3"
   music_start: "0:26"
 

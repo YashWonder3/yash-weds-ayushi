@@ -29,7 +29,7 @@ const page = await browser.newPage();
 await page.setViewport({ width: 1280, height: 720 });
 await page.goto(pathToFileURL(path.join(here, 'film.html')).href + '?render', { waitUntil: 'networkidle0' });
 await page.evaluate(async () => {
-  for (const f of ['500 32px "Cormorant Garamond"', 'italic 500 32px "Cormorant Garamond"', '600 32px "Cormorant Garamond"', '400 16px Lora', 'italic 400 16px Lora'])
+  for (const f of ['500 32px "Cormorant Garamond"', 'italic 500 32px "Cormorant Garamond"', '600 32px "Cormorant Garamond"', '500 32px "Cormorant Infant"', '400 16px Lora', 'italic 400 16px Lora'])
     await document.fonts.load(f);
 });
 const frame = (t, type = 'image/jpeg') => page.evaluate((t, type) => {

@@ -119,6 +119,8 @@ Run through this on your Mac before pushing.
 | names / date / city / logo | `make og` | `static/images/og-image.png` (WhatsApp preview) |
 | story text used in the film | `make film` | the film + poster (re-adds the song automatically) |
 | song or song start (`film.music`, `film.music_start`) | `make music` | the film's soundtrack only |
+| details shown in the WhatsApp invite video | `make invite` | `video/output/` (not published, see `video/README.md`) |
+| song or song start for that video (`invite_video`) | `make invite-music` | that video's soundtrack only |
 
 ### 3.3 Test locally (local-testing mode, with the green ribbon)
 ```bash
@@ -338,6 +340,8 @@ make preview      # regenerate preview.html + film/story.js
 make og           # regenerate WhatsApp preview image
 make film         # re-render the film (keeps the song)
 make music        # change/add the film's song only
+make invite       # render the WhatsApp invite video
+make invite-music # change the invite video's song only
 make deploy       # build check + commit + push (triggers GitHub Pages)
 git revert HEAD && git push origin main   # roll back the last change
 ```
