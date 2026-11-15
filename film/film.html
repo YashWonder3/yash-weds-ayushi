@@ -54,6 +54,15 @@ function text(str, x, y, { size = 32, font = SERIF, color = C.ink, align = 'cent
   ctx.restore();
 }
 
+// x of the heart so "nameA ❤ nameB" sits centred as one line, whatever the name lengths
+function namesCenter(size) {
+  ctx.save();
+  ctx.font = `500 ${size}px ${SERIF}`;
+  const x = W / 2 + (ctx.measureText(nameA).width - ctx.measureText(nameB).width) / 2;
+  ctx.restore();
+  return x;
+}
+
 function wrap(str, maxW, size, font, style = '') {
   ctx.font = `${style} 400 ${size}px ${font}`;
   const words = str.split(' '), lines = [];
@@ -171,10 +180,11 @@ function sceneTitle(t) {
   ctx.save(); ctx.globalAlpha = a;
   eyebrow(S.film.title, 230, prog(t, .4, 1.2));
   const n = easeOut(prog(t, .8, 2));
-  text(nameA, W / 2 - 70 - 30 * (1 - n), 335, { size: 104, alpha: n, align: 'right' });
-  text(nameB, W / 2 + 70 + 30 * (1 - n), 335, { size: 104, alpha: n, align: 'left' });
+  const cx = namesCenter(104);
+  text(nameA, cx - 70 - 30 * (1 - n), 335, { size: 104, alpha: n, align: 'right' });
+  text(nameB, cx + 70 + 30 * (1 - n), 335, { size: 104, alpha: n, align: 'left' });
   const hp = back(prog(t, 1.6, 2.3));
-  heart(W / 2, 338, 46 * hp + Math.sin(t * 6) * 1.5 * hp, C.terra);
+  heart(cx, 338, 46 * hp + Math.sin(t * 6) * 1.5 * hp, C.terra);
   text(S.couple.hindi, W / 2, 432, { size: 34, color: C.soft, alpha: prog(t, 2.1, 2.8) });
   text('❦', W / 2, 492, { size: 26, color: C.gold, alpha: prog(t, 2.4, 3) });
   ctx.restore();
@@ -260,7 +270,10 @@ function sceneRegister(t) {
     ctx.fillStyle = 'rgba(193,154,91,.28)';
     ctx.fillRect(bx + 30, herY - 16, (bw / 2 - 60) * hl, 30);
     const nm = nameB.slice(0, Math.round(nameB.length * prog(t, 13.4, 14.2)));
-    text(nm, bx + 44, herY - 1, { size: 32, style: 'italic', align: 'left' });
+    // shrink a long name so it never runs into the heart
+    ctx.font = `italic 500 32px ${SERIF}`;
+    const nmSize = Math.min(32, 32 * (bw / 2 - 144) / ctx.measureText(nameB).width);
+    text(nm, bx + 44, herY - 1, { size: nmSize, style: 'italic', align: 'left' });
     ctx.save(); ctx.translate(bx + bw / 2 - 30, fy); // pointer
     ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(22, -10); ctx.lineTo(22, 10); ctx.closePath();
     ctx.fillStyle = C.terra; ctx.fill(); ctx.restore();
@@ -354,9 +367,10 @@ function sceneFinale(t) {
   if (a <= 0) return;
   ctx.save(); ctx.globalAlpha = a;
   eyebrow('Together with their families, we invite you', 150, 1);
-  text(nameA, W / 2 - 60, 262, { size: 92, align: 'right' });
-  text(nameB, W / 2 + 60, 262, { size: 92, align: 'left' });
-  heart(W / 2, 265, 40 + Math.sin(t * 5) * 2, C.terra);
+  const cx = namesCenter(92);
+  text(nameA, cx - 60, 262, { size: 92, align: 'right' });
+  text(nameB, cx + 60, 262, { size: 92, align: 'left' });
+  heart(cx, 265, 40 + Math.sin(t * 5) * 2, C.terra);
   text('❦', W / 2, 340, { size: 24, color: C.gold, alpha: prog(t, 27, 27.6) });
   // Cormorant Infant has normal numerals; canvas can't switch Cormorant Garamond's old-style ones
   text(S.wedding.datesLine, W / 2, 398, { size: 46, font: '"Cormorant Infant", Georgia, serif', alpha: prog(t, 27.1, 27.7) });

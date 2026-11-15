@@ -1,11 +1,11 @@
 window.STORY = {
   "meta": {
-    "title": "Yash ❤ Ayushi — Wedding Invitation",
-    "description": "Yash ❤ Ayushi are getting married! 11 December 2026 at Pearl Resort, Gangapur City."
+    "title": "Yash ❤ Ayushi (Urvashi) — Wedding Invitation",
+    "description": "Yash ❤ Ayushi (Urvashi) are getting married! 11 December 2026 at Pearl Resort, Gangapur City."
   },
   "couple": {
-    "display": "Yash ❤ Ayushi",
-    "hindi": "यश ❤ आयुषी",
+    "display": "Yash ❤ Ayushi (Urvashi)",
+    "hindi": "यश ❤ आयुषी (उर्वशी)",
     "hashtag": "#YashWedsAyushi"
   },
   "wedding": {
@@ -20,7 +20,7 @@ window.STORY = {
     "bride": "D/o Smt. Sushma & Shri Rajendra Khandelwal"
   },
   "story": {
-    "p1": "Yash first saw Ayushi at office onboarding — and somehow left without her name. So he found the only honest source there was: the onboarding register.",
+    "p1": "Yash first saw Ayushi (Urvashi) at office onboarding — and somehow left without her name. So he found the only honest source there was: the onboarding register.",
     "p2": "One honest conversation became many. Better communication became a habit — and habit became love. The kind that is mutual, that never leaves the other empty, and that helps each other bloom.",
     "chips": [
       "Love, mutual by choice",
@@ -48,8 +48,13 @@ window.STORY = {
           "venue": "Pearl Resort, Gangapur City"
         },
         {
-          "name": "Wedding Ceremony",
+          "name": "Baraat",
           "time": "7:00 PM",
+          "venue": "Pearl Resort, Gangapur City"
+        },
+        {
+          "name": "Dinner",
+          "time": "7:30 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]
@@ -190,7 +195,7 @@ window.STORY = {
       "placeholder": "Patience, chai, and never going to bed angry…",
       "button": "Add to My Blessings"
     },
-    "share": "I scored {score}/{total} on Yash & Ayushi’s ‘{title}’ quiz 🪔 Can you do better? {hashtag}",
+    "share": "I scored {score}/{total} on Yash & Ayushi (Urvashi)’s ‘{title}’ quiz 🪔 Can you do better? {hashtag}",
     "results": {
       "high": {
         "title": "Enlightened Soul",

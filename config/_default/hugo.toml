@@ -2,6 +2,6 @@
 #   Local testing → config/development/  (used by `hugo server`, `make serve`, `make phone`)
 #   Live site     → config/production/   (used by `hugo`, `make check`, and GitHub Actions)
 disableKinds = ["taxonomy", "term", "RSS", "sitemap"]
-title = "Yash ❤ Ayushi — Wedding Invitation"
+title = "Yash ❤ Ayushi (Urvashi) — Wedding Invitation"
 [params]
-  description = "Yash ❤ Ayushi are getting married! 11 December 2026 at Pearl Resort, Gangapur City."
+  description = "Yash ❤ Ayushi (Urvashi) are getting married! 11 December 2026 at Pearl Resort, Gangapur City."
