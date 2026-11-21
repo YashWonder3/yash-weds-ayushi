@@ -101,7 +101,7 @@
   });
 })();
 
-// Countdown to the Sangeet & Engagement (target set in data/story.yaml -> wedding.countdown)
+// Countdown to the Shubh Lagan, the first event (target set in data/story.yaml -> wedding.countdown)
 (function(){
   var box = document.getElementById('countdown');
   var target = new Date((box && box.getAttribute('data-target')) || '2026-12-10T16:00:00+05:30').getTime();

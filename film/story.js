@@ -33,8 +33,13 @@ window.STORY = {
       "label": "Thursday · 10 December 2026",
       "items": [
         {
-          "name": "Sangeet and Engagement Ceremony",
+          "name": "Shubh Lagan",
           "time": "4:00 PM",
+          "venue": "Pearl Resort, Gangapur City"
+        },
+        {
+          "name": "Sangeet & Engagement Ceremony",
+          "time": "5:00 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]

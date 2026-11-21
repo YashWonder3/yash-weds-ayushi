@@ -27,6 +27,8 @@
   .monogram{width:430px;height:auto;margin-bottom:34px}
   .names{font-family:var(--serif);font-weight:500;font-size:140px;line-height:1.1;white-space:nowrap}
   .love{color:var(--love);font-size:.86em}
+  .names .name{display:inline-flex;flex-direction:column;align-items:center}
+  .names .alias{font-size:.42em;font-style:italic;color:var(--soft);letter-spacing:.03em;line-height:1;margin:.22em 0 .2em}
   .hindi{font-family:var(--deva);font-size:56px;color:var(--soft);margin-top:12px}
   .date{font-family:var(--serif);font-weight:700;font-size:82px;line-height:1.15}
   .place{font-size:42px;color:var(--soft);margin-top:14px}
@@ -86,9 +88,14 @@ function names(spec, str, delay) {
   str.split(' & ').forEach((p, i) => { if (i) parts.push(' & '); parts.push(h('i.nb', p)); });
   return h(spec, parts, delay);
 }
-function withHeart(spec, str, delay) {
+// a pet name in brackets, e.g. "Ayushi (Urvashi)", sits small and centred under the name it belongs to (same as the card)
+const withAlias = str => {
+  const m = str.trim().match(/^(\S+)\s*\(([^)]+)\)$/);
+  return m ? h('span.name', [m[1], h('small.alias', `(${m[2]})`)]) : str;
+};
+function withHeart(spec, str, delay, stackAlias = false) {
   const [a, b] = str.split('❤');
-  return h(spec, [a, h('span.love', '❤︎'), b], delay);
+  return h(spec, [a, h('span.love', '❤︎'), stackAlias ? ' ' : '', stackAlias ? withAlias(b) : b], delay);
 }
 
 const shloka = (S.couple.shloka || 'वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।\nनिर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥').split(/\n|<br>/);
@@ -105,7 +112,7 @@ const SCENES = [
   [7.5, [
     h('p.eyebrow', 'The Wedding Of', .2),
     img('../static/images/hero-placeholder.svg', 'monogram', .4),
-    withHeart('p.names', S.couple.display, .8),
+    withHeart('p.names', S.couple.display, .8, true),
     withHeart('p.hindi', S.couple.hindi, 1.1),
     h('p.divider', '❦', 1.4),
     h('p.date', S.wedding.datesLine, 1.6),
@@ -134,7 +141,7 @@ const SCENES = [
     ...(T.help && T.help.phone ? [h('.route', [h('small', 'Need Help?'), h('strong', [T.help.name, T.help.phone].filter(Boolean).join(' · '))], 2.6)] : []),
   ]],
   [7.5, [
-    withHeart('p.names', S.couple.display, .2),
+    withHeart('p.names', S.couple.display, .2, true),
     h('p.divider', '❦', .5),
     h('p.date', 'See you there.', .7),
     h('p.link-label', 'Full invitation, directions & blessings', 1.4),

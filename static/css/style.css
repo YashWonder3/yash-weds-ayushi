@@ -15,7 +15,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.15}
 .shloka{font-family:'Tiro Devanagari Hindi',var(--serif);color:var(--terra-dark);-webkit-text-stroke:.3px currentColor;font-size:.98rem;line-height:1.75;margin-top:.7rem}
 .hero h1{font-size:clamp(2.1rem,11vw,4.2rem);color:var(--ink)}
 .hero h1 .name{display:inline-flex;flex-direction:column;align-items:center}
-.hero h1 .alias{font-size:.46em;font-style:italic;color:var(--ink-soft);letter-spacing:.03em;line-height:1;margin:.12em 0 .4em}
+.hero h1 .alias{font-size:.46em;font-style:italic;color:var(--ink-soft);letter-spacing:.03em;line-height:1;margin:.22em 0 .4em}
 .love{color:var(--love);font-family:var(--serif)}
 .hindi{font-family:'Tiro Devanagari Hindi',var(--serif);font-size:1.2rem;color:var(--ink-soft);margin-top:.35rem}
 .divider{color:var(--gold);margin:.9rem 0;font-size:1.1rem;letter-spacing:.5em;text-align:center}

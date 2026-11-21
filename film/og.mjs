@@ -9,12 +9,15 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 const S = yaml.load(readFileSync(path.join(root, 'data', 'story.yaml'), 'utf8'));
 const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const names = esc(S.couple.display).replace('❤', '<span class="love">❤&#xFE0E;</span>');
+// a pet name in brackets, e.g. "Ayushi (Urvashi)", sits small and centred under the name it belongs to (same as the card)
+const names = esc(S.couple.display)
+  .replace(/(\S+)\s*\(([^)]+)\)/g, '<span class="name">$1<small class="alias">($2)</small></span>')
+  .replace('❤', '<span class="love">❤&#xFE0E;</span>');
 // Just the rings + initials: crop off the small date line, the big date sits below.
 const logo = readFileSync(path.join(root, 'static', 'images', 'hero-placeholder.svg'), 'utf8').replace(/viewBox="[^"]*"/, 'viewBox="30 66 180 134"');
 
 const html = `<!doctype html><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lora&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Lora&display=swap" rel="stylesheet">
 <style>
   body{margin:0;width:1200px;height:630px;background:#FAF5EE;font-family:'Lora',serif;font-variant-numeric:lining-nums;color:#4A342E}
   .f{position:absolute;inset:28px;border:2px solid #C19A5B}.f2{position:absolute;inset:42px;border:1px solid rgba(193,154,91,.6)}
@@ -23,6 +26,8 @@ const html = `<!doctype html><meta charset="utf-8">
   .eb{letter-spacing:.42em;font-size:22px;color:#B4664A;text-transform:uppercase;margin:6px 0 10px}
   h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:96px;line-height:1;margin:0}
   .love{color:#7E2A33}
+  .name{display:inline-flex;flex-direction:column;align-items:center}
+  .alias{font-size:.42em;font-style:italic;color:#7A635B;letter-spacing:.03em;line-height:1;margin-top:.22em}
   .d{font-family:'Cormorant Garamond',serif;font-size:44px;color:#7A635B;margin-top:18px}
   .v{font-size:26px;color:#7A635B;margin-top:6px}
 </style>
