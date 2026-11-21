@@ -47,7 +47,9 @@
   {{ end }}
   <p class="eyebrow">The Wedding Of</p>
   <img class="monogram" src='{{ "images/hero-placeholder.svg" | relURL }}' alt="{{ replace site.Data.story.couple.display "❤" "and" }}" width="220" height="158">
-  <h1>{{ replace (site.Data.story.couple.display | htmlEscape) "❤" "<span class=\"love\" aria-label=\"loves\">❤&#xFE0E;</span>" | safeHTML }}</h1>
+  {{/* A pet name in brackets, e.g. "Ayushi (Urvashi)", sits small and centred under the name it belongs to */}}
+  {{ $display := replaceRE `(\S+)\s*\(([^)]+)\)` `<span class="name">$1<small class="alias">($2)</small></span>` (site.Data.story.couple.display | htmlEscape) }}
+  <h1>{{ replace $display "❤" "<span class=\"love\" aria-label=\"loves\">❤&#xFE0E;</span>" | safeHTML }}</h1>
   <p class="hindi">{{ replace (site.Data.story.couple.hindi | htmlEscape) "❤" "<span class=\"love\">❤&#xFE0E;</span>" | safeHTML }}</p>
   <p class="divider">❦</p>
   <p class="dates">{{ site.Data.story.wedding.datesLine }}</p>
