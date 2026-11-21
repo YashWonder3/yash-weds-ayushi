@@ -49,12 +49,12 @@ window.STORY = {
         },
         {
           "name": "Baraat",
-          "time": "7:00 PM",
+          "time": "6:30 PM",
           "venue": "Pearl Resort, Gangapur City"
         },
         {
           "name": "Dinner",
-          "time": "7:30 PM",
+          "time": "7:00 PM",
           "venue": "Pearl Resort, Gangapur City"
         }
       ]
